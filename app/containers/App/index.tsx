@@ -13,7 +13,7 @@ import { Switch, Route } from 'react-router-dom';
 import Amplify from 'aws-amplify';
 import config from 'utils/config';
 // import HomePage from 'containers/HomePage/Loadable';
-import User from 'containers/User';
+import { Login, Register } from 'containers/User';
 import Doctors from 'containers/Doctors/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
@@ -64,7 +64,8 @@ export default function App() {
       </Helmet>
       <Header />
       <Switch>
-        <Route exact path="/login" component={User} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
         <Route path="/features" component={FeaturePage} />
         <Route path="/doctors" component={Doctors} />
         <Route path="" component={NotFoundPage} />
