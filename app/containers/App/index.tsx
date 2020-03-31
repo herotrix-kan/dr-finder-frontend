@@ -10,8 +10,10 @@ import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styles/styled-components';
 import { Switch, Route } from 'react-router-dom';
-
-import HomePage from 'containers/HomePage/Loadable';
+import Amplify from 'aws-amplify';
+import config from 'utils/config';
+// import HomePage from 'containers/HomePage/Loadable';
+import User from 'containers/User';
 import Doctors from 'containers/Doctors/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
@@ -28,7 +30,29 @@ const AppWrapper = styled.div`
   padding: 0 16px;
   flex-direction: column;
 `;
-
+Amplify.configure({
+  Auth: {
+    mandatorySignIn: true,
+    region: config.cognito.REGION,
+    userPoolId: config.cognito.USER_POOL_ID,
+    identityPoolId: config.cognito.IDENTITY_POOL_ID,
+    userPoolWebClientId: config.cognito.APP_CLIENT_ID
+  },
+  Storage: {
+    region: config.s3.REGION,
+    bucket: config.s3.BUCKET,
+    identityPoolId: config.cognito.IDENTITY_POOL_ID
+  },
+  // API: {
+  //   endpoints: [
+  //     {
+  //       name: "notes",
+  //       endpoint: config.apiGateway.URL,
+  //       region: config.apiGateway.REGION
+  //     },
+  //   ]
+  // }
+});
 export default function App() {
   return (
     <AppWrapper>
@@ -40,7 +64,7 @@ export default function App() {
       </Helmet>
       <Header />
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route exact path="/login" component={User} />
         <Route path="/features" component={FeaturePage} />
         <Route path="/doctors" component={Doctors} />
         <Route path="" component={NotFoundPage} />
