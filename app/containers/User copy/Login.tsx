@@ -1,31 +1,16 @@
 /*
  *
- * User Login
+ * User
  *
  */
 
-import React, { memo } from 'react';
-import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
-import { useSelector, useDispatch } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import React, { useState } from 'react';
 import { Auth } from "aws-amplify";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { FormError } from 'components/Form';
-
-import { useInjectSaga } from 'utils/injectSaga';
-import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectUser from './selectors';
-import reducer from './reducer';
-import saga from './saga';
-import messages from './messages';
-
-const stateSelector = createStructuredSelector({
-  user: makeSelectUser(),
-});
-
-interface Props { }
+import { Helmet } from 'react-helmet';
+import { useFormFields } from "utils/hooksLib";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
@@ -38,20 +23,28 @@ const validationSchema = Yup.object().shape({
     .required('Must enter a password'),
 });
 
-function User(props: Props) {
-  // Warning: Add your key to RootState in types/index.d.ts file
-  useInjectReducer({ key: 'user', reducer: reducer });
-  useInjectSaga({ key: 'user', saga: saga });
+interface Props { }
 
-  const { user } = useSelector(stateSelector);
-  const dispatch = useDispatch();
+function User(props: Props) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleSubmit(username, password) {
+    // event.preventDefault();
+    setIsLoading(true);
+    try {
+      await Auth.signIn(username, password);
+      // props.userHasAuthenticated(true);
+    } catch (e) {
+      alert(e.message);
+      setIsLoading(false);
+    }
+  }
   return (
     <div>
       <Helmet>
-        <title>User Login</title>
+        <title>User</title>
         <meta name="description" content="Description of User" />
       </Helmet>
-      <FormattedMessage {...messages.header} />
       <div className="Login">
         <h1>User Login</h1>
         <Formik
@@ -63,7 +56,7 @@ function User(props: Props) {
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(true);
             const { username, password } = values;
-            dispatch(userLoginAction(username, password));;
+            handleSubmit(username, password);
           }}>
           {({
             values,
@@ -109,4 +102,4 @@ function User(props: Props) {
   );
 }
 
-export default memo(User);
+export default User;
