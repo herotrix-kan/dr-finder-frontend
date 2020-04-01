@@ -13,7 +13,7 @@ interface UserState {
   readonly registerConfirmError: string | null,
   readonly isCodeSent: boolean,
 }
-interface LoginUser {
+export interface LoginUser {
   id: string | null;
   patientName: string | null;
   introduction: string | null,

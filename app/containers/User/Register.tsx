@@ -4,27 +4,26 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { useSelector, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { Auth } from "aws-amplify";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { FormError } from 'components/Form';
-
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectUser from './selectors';
+import { makeSelectiIsCodeSent } from "./selectors";
+import { userRegisterAction, userConfirmRegisterAction } from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 
 const stateSelector = createStructuredSelector({
-  user: makeSelectUser(),
+  isCodeSent: makeSelectiIsCodeSent(),
 });
-
+const [usernameState, setUsernameState] = useState<string>('');
 interface Props { }
 
 const validationSchema = Yup.object().shape({
@@ -37,14 +36,143 @@ const validationSchema = Yup.object().shape({
     .max(50, 'Must be shoter than 50')
     .required('Must enter a password'),
 });
+const validationConfirmationSchema = Yup.object().shape({
+  confirmationCode: Yup.string().required('Must enter a code')
+});
 
-function User(props: Props) {
+function Register(props: Props) {
   // Warning: Add your key to RootState in types/index.d.ts file
   useInjectReducer({ key: 'user', reducer: reducer });
   useInjectSaga({ key: 'user', saga: saga });
 
-  const { user } = useSelector(stateSelector);
+  const { isCodeSent } = useSelector(stateSelector);
   const dispatch = useDispatch();
+
+
+  function registerForm() {
+    return (
+      <Formik
+        initialValues={{
+          username: '',
+          password: '',
+          passwordConfirm: '',
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values, { setSubmitting }) => {
+          setSubmitting(true);
+          const { username, password, passwordConfirm } = values;
+          if (password === passwordConfirm) {
+            dispatch(userRegisterAction(username, password));
+            setUsernameState(username);
+          }
+          else {
+            alert("Two password don't match");
+          }
+          setTimeout(() => {
+            setSubmitting(false);
+          }, 500);
+        }}>
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+        }) => (
+            <form
+              onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                value={values.username}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              <FormError
+                touched={touched.username}
+                message={errors.username} />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              <FormError
+                touched={touched.password}
+                message={errors.password} />
+              <input
+                type="password"
+                name="passwordConfirm"
+                placeholder="Password Confirm"
+                value={values.passwordConfirm}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              <FormError
+                touched={touched.passwordConfirm}
+                message={errors.passwordConfirm} />
+              <button type="submit" disabled={isSubmitting}>
+                Register
+            </button>
+            </form>
+          )}
+      </Formik>
+    );
+  }
+  function confirmationForm() {
+    return (
+      <Formik
+        initialValues={{
+          confirmationCode: '',
+        }}
+        validationSchema={validationConfirmationSchema}
+        onSubmit={(values, { setSubmitting }) => {
+          setSubmitting(true);
+          const { confirmationCode } = values;
+          console.info("confirmationCode:", confirmationCode);
+          dispatch(userConfirmRegisterAction(usernameState, confirmationCode));
+          setTimeout(() => {
+            setSubmitting(false);
+          }, 500);
+        }}>
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+        }) => (
+            <form
+              onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="confirmation"
+                placeholder="Confirmation Code"
+                value={values.confirmationCode}
+                onChange={handleChange}
+                // onChange={() => { console.info(values.confirmationCode) }}
+                onBlur={handleBlur}
+              />
+              <FormError
+                touched={touched.confirmationCode}
+                message={errors.confirmationCode} />
+              <p>Please check your email for the code.</p>
+              <button type="submit" disabled={isSubmitting}>
+                Verify
+            </button>
+            </form>
+          )}
+      </Formik>
+    );
+  }
+
   return (
     <div>
       <Helmet>
@@ -53,60 +181,11 @@ function User(props: Props) {
       </Helmet>
       <FormattedMessage {...messages.header} />
       <div className="Login">
-        <h1>User Login</h1>
-        <Formik
-          initialValues={{
-            username: '',
-            password: '',
-          }}
-          validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            setSubmitting(true);
-            const { username, password } = values;
-            dispatch(userLoginAction(username, password));;
-          }}>
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-          }) => (
-              <form
-                onSubmit={handleSubmit}>
-                <input
-                  type="text"
-                  name="username"
-                  placeholder="Username"
-                  value={values.username}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <FormError
-                  touched={touched.username}
-                  message={errors.username} />
-                <input
-                  type="text"
-                  name="password"
-                  placeholder="Password"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <FormError
-                  touched={touched.password}
-                  message={errors.password} />
-                <button type="submit" disabled={isSubmitting}>
-                  Login
-					</button>
-              </form>
-            )}
-        </Formik>
+        <h1>User Register</h1>
+        {isCodeSent ? confirmationForm() : registerForm()}
       </div>
     </div>
   );
 }
 
-export default memo(User);
+export default memo(Register);

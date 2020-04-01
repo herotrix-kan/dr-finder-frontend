@@ -9,7 +9,6 @@ import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { useSelector, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { Auth } from "aws-amplify";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { FormError } from 'components/Form';
@@ -67,7 +66,7 @@ function Login(props: Props) {
             onSubmit={(values, { setSubmitting }) => {
               setSubmitting(true);
               const { username, password } = values;
-              dispatch(userLoginAction(username, password));;
+              dispatch(userLoginAction(username, password));
             }}>
             {({
               values,

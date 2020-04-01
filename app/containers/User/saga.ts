@@ -3,7 +3,7 @@ import { Auth } from "aws-amplify";
 import ActionTypes from './constants';
 import * as actions from './actions';
 import request from 'utils/request';
-
+import { LoginUser } from './types';
 
 const apiKey = "api_key=6dca175d57c46d91b59decd5e3c7e4cf";
 const url = `https://uq0jt4jgdl.execute-api.us-east-1.amazonaws.com/dev/graphql`;
@@ -21,12 +21,12 @@ export function* userLoginAmplify(action) {
 
     const url = `https://api.themoviedb.org/3/trending/all/day?${apiKey}`;
     const result = yield call(request, url);
-    const patient = {
+    const patient: LoginUser = {
       id: result.sId,
-      doctorName: result.doctorName,
+      patientName: result.patientName,
       introduction: result.introduction,
       address: result.address,
-      rsuburb: result.suburb,
+      suburb: result.suburb,
       addressState: result.addressState,
       postcode: result.postcode,
       speakingLanguage: result.speakingLanguage,
