@@ -14,6 +14,7 @@ import Amplify from 'aws-amplify';
 import config from 'utils/config';
 // import HomePage from 'containers/HomePage/Loadable';
 import { Login, Register } from 'containers/User';
+import { Login } from 'containers/User2';
 import Doctors from 'containers/Doctors/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
@@ -67,7 +68,7 @@ export default function App() {
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route path="/features" component={FeaturePage} />
-        <Route path="/doctors" component={Doctors} />
+        <Route path="/" component={Doctors} />
         <Route path="" component={NotFoundPage} />
       </Switch>
       <Footer />

@@ -8,18 +8,22 @@ import { LoginUser } from './types';
 const apiKey = "api_key=6dca175d57c46d91b59decd5e3c7e4cf";
 const url = `https://uq0jt4jgdl.execute-api.us-east-1.amazonaws.com/dev/graphql`;
 
-export function* userLogin() {
-  yield takeLatest(ActionTypes.USER_LOGIN, userLoginAmplify);
-}
-
-export function* userLoginAmplify(action) {
+// export function* userLogin() {
+//   yield takeLatest(ActionTypes.USER_LOGIN, userLoginAmplify);
+// }
+export function* userLogin(action: ReturnType<typeof actions.userLoginAction>, ) {
   try {
-    const loginResponse = yield Auth.signIn(action.username, action.password);
+    const { username, password } = action.payload;
+    console.info(username, password);
+    const loginResponse = yield Auth.signIn(username, password);
     console.info("login response", loginResponse);
 
-    if (!loginResponse) return;
+    if (!loginResponse.CognitoUser) return;
 
     const url = `https://api.themoviedb.org/3/trending/all/day?${apiKey}`;
+    const id = loginResponse.CognitoUser.username;
+
+    //will change to grahql call
     const result = yield call(request, url);
     const patient: LoginUser = {
       id: result.sId,
@@ -36,39 +40,39 @@ export function* userLoginAmplify(action) {
     yield put(actions.userLoginSuccessAction(patient));
 
   } catch (error) {
+    alert(error.message);
     yield put(actions.userLoginFailedAction(error.message));
   }
 }
-
-export function* userRegister() {
-  yield takeLatest(ActionTypes.USER_CONFIRM_REGISTER, userRegisterAmplify);
-}
-
-export function* userRegisterAmplify(action) {
+export function* userRegister(action: ReturnType<typeof actions.userRegisterAction>, ) {
   try {
-    yield Auth.signUp(action.username, action.password);
-    yield put(actions.userRegisterSuccessAction(true));
+    const { username, password } = action.payload;
+    console.info(username, password);
+    const response = yield Auth.signUp(username, password);
+    console.info("register:", response);
+    if (response.user) yield put(actions.userRegisterSuccessAction(true));
   } catch (error) {
+    alert(error.message);
     yield put(actions.userRegisterFailedAction(error.message));
   }
 }
 
-export function* userConfirmRegister() {
-  yield takeLatest(ActionTypes.USER_CONFIRM_REGISTER, userConfirmRegisterAmplify);
-}
-
-export function* userConfirmRegisterAmplify(action) {
+//will update confirmation, can create a patient in graphql
+export function* userConfirmRegister(action: ReturnType<typeof actions.userConfirmRegisterAction>, ) {
   try {
-    const result = yield Auth.confirmSignUp(action.username, action.confirmationCode);
-    yield put(actions.userConfirmRegisterSuccessAction(action.username, result.id));
+    const { username, confirmationCode } = action.payload;
+    const result = yield Auth.confirmSignUp(username, confirmationCode);
+    yield put(actions.userConfirmRegisterSuccessAction(username, result.id));
 
   } catch (error) {
+    alert(error.message);
     yield put(actions.userConfirmRegisterFailedAction(error.message));
   }
 }
 
 // Individual exports for testing
 export default function* doctorsSaga() {
-  // yield takeLatest(ActionTypes.LIST_MOVIES, listMovies);
-  yield all([userLogin(), userRegister(), userConfirmRegister()]);
+  yield takeLatest(ActionTypes.USER_LOGIN, userLogin);
+  yield takeLatest(ActionTypes.USER_REGISTER, userRegister);
+  yield takeLatest(ActionTypes.USER_CONFIRM_REGISTER, userConfirmRegister);
 }

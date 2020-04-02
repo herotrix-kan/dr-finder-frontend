@@ -23,7 +23,7 @@ import messages from './messages';
 const stateSelector = createStructuredSelector({
   isCodeSent: makeSelectiIsCodeSent(),
 });
-const [usernameState, setUsernameState] = useState<string>('');
+
 interface Props { }
 
 const validationSchema = Yup.object().shape({
@@ -41,6 +41,7 @@ const validationConfirmationSchema = Yup.object().shape({
 });
 
 function Register(props: Props) {
+  const [usernameState, setUsernameState] = useState<string>('');
   // Warning: Add your key to RootState in types/index.d.ts file
   useInjectReducer({ key: 'user', reducer: reducer });
   useInjectSaga({ key: 'user', saga: saga });

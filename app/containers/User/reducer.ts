@@ -40,10 +40,16 @@ function userReducer(
         isAuthenticated: false,
         loginUser: action.payload,
       };
+    case ActionTypes.USER_REGISTER:
+      return {
+        ...state,
+        isCodeSent: false,
+      };
     case ActionTypes.USER_REGISTER_SUCCESS:
       return {
         ...state,
         isCodeSent: true,
+        registerError: null,
       };
     case ActionTypes.USER_CONFIRM_REGISTER_SUCCESS:
       return {

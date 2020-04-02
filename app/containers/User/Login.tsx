@@ -12,7 +12,7 @@ import { createStructuredSelector } from 'reselect';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { FormError } from 'components/Form';
-
+import { Redirect, Route, Link } from 'react-router-dom'
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -26,7 +26,9 @@ const stateSelector = createStructuredSelector({
   isAuthenticated: makeSelectIsAuthenticated(),
 });
 
-interface Props { }
+interface Props {
+  location: string;
+}
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
@@ -55,7 +57,7 @@ function Login(props: Props) {
           <meta name="description" content="Description of User" />
         </Helmet>
         <FormattedMessage {...messages.header} />
-        <div className="Login">
+        <div>
           <h1>User Login</h1>
           <Formik
             initialValues={{
@@ -67,6 +69,9 @@ function Login(props: Props) {
               setSubmitting(true);
               const { username, password } = values;
               dispatch(userLoginAction(username, password));
+              setTimeout(() => {
+                setSubmitting(false);
+              }, 500);
             }}>
             {({
               values,
@@ -91,7 +96,7 @@ function Login(props: Props) {
                     touched={touched.username}
                     message={errors.username} />
                   <input
-                    type="text"
+                    type="password"
                     name="password"
                     placeholder="Password"
                     value={values.password}
@@ -107,11 +112,16 @@ function Login(props: Props) {
                 </form>
               )}
           </Formik>
+          <Link to="/register">Register</Link>
+
         </div>
-      </div>
+      </div >
     );
 
-  else return (<div>redirect to home</div>);
+  else return (<Redirect to={{
+    pathname: '/',
+    state: { from: props.location }
+  }} />);
 }
 
 export default memo(Login);
