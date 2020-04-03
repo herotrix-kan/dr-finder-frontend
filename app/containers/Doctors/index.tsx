@@ -13,6 +13,7 @@ import { createStructuredSelector } from "reselect";
 import { useInjectSaga } from "utils/injectSaga";
 import { useInjectReducer } from "utils/injectReducer";
 import { makeSelectDoctors, makeSelectLoading, makeSelectError } from "./selectors";
+
 import { listDoctors } from './actions';
 import reducer from "./reducer";
 import saga from "./saga";

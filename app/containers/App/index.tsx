@@ -10,12 +10,12 @@ import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styles/styled-components';
 import { Switch, Route } from 'react-router-dom';
-import Amplify from 'aws-amplify';
 import config from 'utils/config';
+import Amplify from 'aws-amplify';
 // import HomePage from 'containers/HomePage/Loadable';
-import { Login, Register } from 'containers/User';
-import { Login } from 'containers/User2';
+
 import Doctors from 'containers/Doctors/Loadable';
+import { Login, Register } from 'containers/User';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
@@ -54,7 +54,9 @@ Amplify.configure({
   //   ]
   // }
 });
+
 export default function App() {
+
   return (
     <AppWrapper>
       <Helmet
@@ -75,4 +77,5 @@ export default function App() {
       <GlobalStyle />
     </AppWrapper>
   );
+
 }
