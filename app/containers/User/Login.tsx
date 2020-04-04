@@ -13,11 +13,11 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { FormError } from 'components/Form';
 import { Redirect, Route, Link } from 'react-router-dom'
-
+import { Auth } from "aws-amplify";
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { makeSelectIsAuthenticated } from "./selectors";
-import { userLoginAction } from './actions';
+import { userLoginAction, userReturnLoginAction } from './actions';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -48,7 +48,23 @@ function Login(props: Props) {
 
   const { isAuthenticated } = useSelector(stateSelector);
   const dispatch = useDispatch();
+  React.useEffect(() => {
+    onLoad();
+  }, []);
 
+  async function onLoad() {
+    try {
+      const response = await Auth.currentSession();
+      const id = response.idToken.payload.sub;
+      console.info("user id:", id);
+      dispatch(userReturnLoginAction(id));
+    }
+    catch (e) {
+      if (e !== 'No current user') {
+        alert(e);
+      }
+    }
+  }
   if (!isAuthenticated)
     return (
       <div>

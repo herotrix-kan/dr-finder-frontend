@@ -49,7 +49,6 @@ function Register(props: Props) {
   const { isCodeSent } = useSelector(stateSelector);
   const dispatch = useDispatch();
 
-
   function registerForm() {
     return (
       <Formik
@@ -131,12 +130,12 @@ function Register(props: Props) {
         initialValues={{
           confirmationCode: '',
         }}
-        validationSchema={validationConfirmationSchema}
+        // validationSchema={validationConfirmationSchema}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
           const { confirmationCode } = values;
-          console.info("confirmationCode:", confirmationCode);
-          dispatch(userConfirmRegisterAction(usernameState, confirmationCode));
+          dispatch(userConfirmRegisterAction("70129300@qq.com", confirmationCode));
+          // dispatch(userConfirmRegisterAction(usernameState, confirmationCode));
           setTimeout(() => {
             setSubmitting(false);
           }, 500);
@@ -154,11 +153,10 @@ function Register(props: Props) {
               onSubmit={handleSubmit}>
               <input
                 type="text"
-                name="confirmation"
+                name="confirmationCode"
                 placeholder="Confirmation Code"
                 value={values.confirmationCode}
                 onChange={handleChange}
-                // onChange={() => { console.info(values.confirmationCode) }}
                 onBlur={handleBlur}
               />
               <FormError
@@ -167,7 +165,7 @@ function Register(props: Props) {
               <p>Please check your email for the code.</p>
               <button type="submit" disabled={isSubmitting}>
                 Verify
-            </button>
+          </button>
             </form>
           )}
       </Formik>

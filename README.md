@@ -194,3 +194,6 @@ Stoiber. For more information see `LICENSE.md`.
 lsof -PiTCP -sTCP:LISTEN
 kill -9 PID
 ```
+
+
+1.confirmation registration issue

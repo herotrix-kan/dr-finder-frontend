@@ -15,7 +15,7 @@ import Amplify from 'aws-amplify';
 // import HomePage from 'containers/HomePage/Loadable';
 
 import Doctors from 'containers/Doctors/Loadable';
-import { Login, Register } from 'containers/User';
+import { Login, Register, Confirmation } from 'containers/User';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
@@ -44,15 +44,9 @@ Amplify.configure({
     bucket: config.s3.BUCKET,
     identityPoolId: config.cognito.IDENTITY_POOL_ID
   },
-  // API: {
-  //   endpoints: [
-  //     {
-  //       name: "notes",
-  //       endpoint: config.apiGateway.URL,
-  //       region: config.apiGateway.REGION
-  //     },
-  //   ]
-  // }
+  API: {
+    graphql_endpoint: config.apiGateway.URL,
+  },
 });
 
 export default function App() {
@@ -69,6 +63,7 @@ export default function App() {
       <Switch>
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
+        <Route exact path="/confirmation" component={Confirmation} />
         <Route path="/features" component={FeaturePage} />
         <Route path="/" component={Doctors} />
         <Route path="" component={NotFoundPage} />

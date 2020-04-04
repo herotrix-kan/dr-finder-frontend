@@ -18,7 +18,7 @@ export const userRegisterAction = (username: string, password: string) => action
 export const userRegisterSuccessAction = (isCodeSent: boolean) => action(ActionTypes.USER_REGISTER_SUCCESS, isCodeSent);
 export const userRegisterFailedAction = (error: string) => action(ActionTypes.USER_REGISTER_FAILED, error);
 
-export const userConfirmRegisterAction = (username, confirmationCode) => action(ActionTypes.USER_CONFIRM_REGISTER, { username, confirmationCode });
+export const userConfirmRegisterAction = (username: string, confirmationCode: string) => action(ActionTypes.USER_CONFIRM_REGISTER, { username, confirmationCode });
 export const userConfirmRegisterSuccessAction = (username: string, id: string) => action(ActionTypes.USER_CONFIRM_REGISTER_SUCCESS, username);
 export const userConfirmRegisterFailedAction = (error: string) => action(ActionTypes.USER_CONFIRM_REGISTER_FAILED, error);
 

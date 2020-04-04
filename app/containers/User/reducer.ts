@@ -36,8 +36,8 @@ function userReducer(
     case ActionTypes.USER_LOGIN_SUCCESS:
       return {
         ...state,
-        isAuthenticating: true,
-        isAuthenticated: false,
+        isAuthenticating: false,
+        isAuthenticated: true,
         loginUser: action.payload,
       };
     case ActionTypes.USER_REGISTER:

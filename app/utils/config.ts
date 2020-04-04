@@ -6,12 +6,12 @@ export default {
     },
     apiGateway: {
         REGION: "us-east-1",
-        URL: "https://uq0jt4jgdl.execute-api.us-east-1.amazonaws.com/dev"
+        URL: "http://localhost:3000/graphql"
     },
     cognito: {
         REGION: "us-east-1",
-        USER_POOL_ID: "us-east-1_9ym3gxyrU",
-        APP_CLIENT_ID: "3kddutctm902v8vdrnu83erlea",
-        IDENTITY_POOL_ID: "us-east-1:ecb086d8-d9bf-4856-bf8e-eb7ba601e98b"
+        USER_POOL_ID: "us-east-1_exmP4lrFq",
+        APP_CLIENT_ID: "2b74j9ui0q46kudid16jsmhtgg",
+        IDENTITY_POOL_ID: "us-east-1:5fba9f5b-78a3-4124-9c31-f2837c0c330a"
     }
 };
