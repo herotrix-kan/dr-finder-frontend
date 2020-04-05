@@ -9,6 +9,7 @@ function ListItem({ doctorItem }) {
       <Item>
         <img src='https://picsum.photos/200' />
         <h5>{doctorItem.doctorName}</h5>
+        <p>{doctorItem.hospitalName}</p>
       </Item>
     </Wrapper>
   );

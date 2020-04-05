@@ -197,3 +197,4 @@ kill -9 PID
 
 
 1.confirmation registration issue
+2.hide header of login page

@@ -9,6 +9,9 @@ import { ContainerState, ContainerActions } from './types';
 
 export const initialState: ContainerState = {
   doctors: [],
+  doctorsSearched: [],
+  searchByName: "",
+  searchByPostcode: "",
   error: true,
   loading: false,
 };

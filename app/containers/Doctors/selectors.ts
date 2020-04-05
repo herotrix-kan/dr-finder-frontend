@@ -26,6 +26,14 @@ export const makeSelectDoctors = () =>
     },
   );
 
+export const makeSelectDoctorsSearched = () =>
+  createSelector(
+    selectDoctorsDomain,
+    substate => {
+      return substate.doctorsSearched;
+    },
+  );
+
 export const makeSelectLoading = () =>
   createSelector(
     selectDoctorsDomain,

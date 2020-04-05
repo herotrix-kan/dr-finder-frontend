@@ -4,7 +4,10 @@ import { ApplicationRootState } from "types";
 
 /* --- STATE --- */
 interface DoctorsState {
-  readonly doctors: Doctor[];
+  readonly doctors: Doctor[] | [];
+  readonly doctorsSearched: Doctor[] | [];
+  readonly searchByName: string,
+  readonly searchByPostcode: string,
   readonly error: boolean;
   readonly loading: boolean;
 }

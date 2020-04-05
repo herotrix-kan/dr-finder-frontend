@@ -1,7 +1,9 @@
 import { all, take, call, put, select, takeLatest } from 'redux-saga/effects';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
+
 import ActionTypes from './constants';
 import * as actions from './actions';
+import { Doctor } from './types';
 import request from 'utils/request';
 import * as queries from 'graphql/queries';
 // import * as mutations from 'graphql/mutations';
@@ -24,8 +26,29 @@ export function* listDoctors(action: ReturnType<typeof actions.listDoctorsAction
     yield put(actions.listDoctorsFailedAction(error.message));
   }
 }
+export const getDoctors = (state) => state.doctors;
+export function* searchDoctors(action: ReturnType<typeof actions.searchDoctorsAction>, ) {
+  try {
+    const array1 = [1, 4, 9, 16];
+    const map1 = array1.map(x => x * 2);
+    const { doctorName, postcode } = action.payload;
 
+    const doctorsState = yield select(getDoctors);
+    const doctorsSearched: [Doctor] = doctorsState.doctors.map((doctor: Doctor) => doctor);
+    console.info(doctorsSearched);
+    if (doctorsSearched)
+      yield put(actions.searchDoctorsSuccessAction(doctorsSearched));
+    else {
+      yield put(actions.searchDoctorsFailedAction('no doctor found'));
+    }
+
+  } catch (error) {
+    alert(error.message);
+    yield put(actions.listDoctorsFailedAction(error.message));
+  }
+}
 // Individual exports for testing
 export default function* doctorsSaga() {
   yield takeLatest(ActionTypes.LIST_DOCTORS, listDoctors);
+  yield takeLatest(ActionTypes.SEARCH_DOCTORS, searchDoctors);
 }

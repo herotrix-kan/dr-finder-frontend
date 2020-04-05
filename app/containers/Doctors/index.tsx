@@ -19,7 +19,7 @@ import reducer from "./reducer";
 import saga from "./saga";
 import messages from "./messages";
 import DoctorList from "components/DoctorList";
-
+import SearchDoctor from "./SearchDoctor";
 const stateSelector = createStructuredSelector({
   doctors: makeSelectDoctors(),
   loading: makeSelectLoading(),
@@ -55,6 +55,7 @@ function Doctor(props: Props) {
         <title>Doctor</title>
         <meta name="description" content="Description of Doctor" />
       </Helmet>
+      <SearchDoctor />
       <h3>Provider Name</h3>
       <DoctorList {...doctorsProps} />
     </div>
