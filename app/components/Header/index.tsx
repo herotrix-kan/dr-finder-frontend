@@ -25,10 +25,10 @@ interface Props {
 function Header(props: Props) {
   const { isAuthenticated } = useSelector(stateSelector);
 
-  if (!isAuthenticated) return (<Redirect to={{
-    pathname: '/login',
-    state: { from: props.location }
-  }} />);
+  // if (!isAuthenticated) return (<Redirect to={{
+  //   pathname: '/login',
+  //   state: { from: props.location }
+  // }} />);
 
   return (
     <div>

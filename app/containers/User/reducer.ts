@@ -15,6 +15,7 @@ export const initialState: ContainerState = {
   registerError: null,
   registerConfirmError: null,
   loginUser: {
+    sId: "patient",
     id: null,
     patientName: null,
     introduction: null,

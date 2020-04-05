@@ -14,6 +14,7 @@ interface UserState {
   readonly isCodeSent: boolean,
 }
 export interface LoginUser {
+  sId: string;
   id: string | null;
   patientName: string | null;
   introduction: string | null,

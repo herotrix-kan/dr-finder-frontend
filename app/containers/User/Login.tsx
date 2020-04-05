@@ -16,7 +16,7 @@ import { Redirect, Route, Link } from 'react-router-dom'
 import { Auth } from "aws-amplify";
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import { makeSelectIsAuthenticated } from "./selectors";
+import { makeSelectIsAuthenticated, makeSelectIsAuthenticating } from "./selectors";
 import { userLoginAction, userReturnLoginAction } from './actions';
 import reducer from './reducer';
 import saga from './saga';
@@ -24,6 +24,7 @@ import messages from './messages';
 
 const stateSelector = createStructuredSelector({
   isAuthenticated: makeSelectIsAuthenticated(),
+  isAuthenticating: makeSelectIsAuthenticating(),
 });
 
 interface Props {
@@ -46,7 +47,7 @@ function Login(props: Props) {
   useInjectReducer({ key: 'user', reducer: reducer });
   useInjectSaga({ key: 'user', saga: saga });
 
-  const { isAuthenticated } = useSelector(stateSelector);
+  const { isAuthenticated, isAuthenticating } = useSelector(stateSelector);
   const dispatch = useDispatch();
   React.useEffect(() => {
     onLoad();
@@ -65,6 +66,7 @@ function Login(props: Props) {
       }
     }
   }
+  if (isAuthenticating) return
   if (!isAuthenticated)
     return (
       <div>
@@ -135,7 +137,7 @@ function Login(props: Props) {
     );
 
   else return (<Redirect to={{
-    pathname: '/',
+    pathname: '/doctors',
     state: { from: props.location }
   }} />);
 }

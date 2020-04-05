@@ -14,7 +14,7 @@ import { useInjectSaga } from "utils/injectSaga";
 import { useInjectReducer } from "utils/injectReducer";
 import { makeSelectDoctors, makeSelectLoading, makeSelectError } from "./selectors";
 
-import { listDoctors } from './actions';
+import { listDoctorsAction } from './actions';
 import reducer from "./reducer";
 import saga from "./saga";
 import messages from "./messages";
@@ -33,6 +33,13 @@ function Doctor(props: Props) {
   useInjectReducer({ key: "doctors", reducer: reducer });
   useInjectSaga({ key: "doctors", saga: saga });
 
+  useEffect(() => {
+    // When initial state username is not null, submit the form to load repos
+
+    dispatch(listDoctorsAction());
+    console.info("listDoctorsAction");
+  }, []);
+
   const { doctors, loading, error } = useSelector(stateSelector);
   const dispatch = useDispatch();
   const doctorsProps = {
@@ -40,10 +47,7 @@ function Doctor(props: Props) {
     loading,
     error,
   };
-  useEffect(() => {
-    // When initial state username is not null, submit the form to load repos
-    dispatch(listDoctors());
-  }, []);
+
   // console.info(doctors);
   return (
     <div>
@@ -51,7 +55,7 @@ function Doctor(props: Props) {
         <title>Doctor</title>
         <meta name="description" content="Description of Doctor" />
       </Helmet>
-      <FormattedMessage {...messages.header} />
+      <h3>Provider Name</h3>
       <DoctorList {...doctorsProps} />
     </div>
   );

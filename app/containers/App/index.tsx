@@ -61,11 +61,11 @@ export default function App() {
       </Helmet>
       <Header />
       <Switch>
-        <Route exact path="/login" component={Login} />
+        <Route exact path="/" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/confirmation" component={Confirmation} />
         <Route path="/features" component={FeaturePage} />
-        <Route path="/" component={Doctors} />
+        <Route path="/doctors" component={Doctors} />
         <Route path="" component={NotFoundPage} />
       </Switch>
       <Footer />

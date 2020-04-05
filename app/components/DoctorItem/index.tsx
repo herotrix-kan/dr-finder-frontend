@@ -7,8 +7,8 @@ function ListItem({ doctorItem }) {
   return (
     <Wrapper>
       <Item>
-        <img src={doctorItem.posterPath} />
-        <h5>{doctorItem.title}</h5>
+        <img src='https://picsum.photos/200' />
+        <h5>{doctorItem.doctorName}</h5>
       </Item>
     </Wrapper>
   );

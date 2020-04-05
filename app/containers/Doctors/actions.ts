@@ -5,11 +5,11 @@
  */
 
 import { action } from 'typesafe-actions';
-import { } from './types';
+import { Doctor } from './types';
 
 import ActionTypes from './constants';
 
 // export const defaultAction = () => action(ActionTypes.DEFAULT_ACTION);
-export const listDoctors = () => action(ActionTypes.LIST_DOCTORS);
-export const listDoctorsSuccess = (doctors) => action(ActionTypes.LIST_DOCTORS_SUCCESS, doctors);
-export const listDoctorsFailed = (error) => action(ActionTypes.LIST_DOCTORS_FAILED, error);
+export const listDoctorsAction = () => action(ActionTypes.LIST_DOCTORS);
+export const listDoctorsSuccessAction = (doctors: [Doctor]) => action(ActionTypes.LIST_DOCTORS_SUCCESS, doctors);
+export const listDoctorsFailedAction = (error: string) => action(ActionTypes.LIST_DOCTORS_FAILED, error);
