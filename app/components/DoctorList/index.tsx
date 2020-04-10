@@ -5,7 +5,7 @@ import ListItem from 'components/ListItem';
 import LoadingIndicator from 'components/LoadingIndicator';
 import RepoListItem from 'containers/RepoListItem';
 import DoctorItem from 'components/DoctorItem';
-import { ContainerState } from '../../containers/Doctors/types';
+import { ContainerState, Doctor } from '../../containers/Doctors/types';
 
 // export type DoctorListProps = Pick<ContainerState, 'loading' | 'error'> & Pick<UserData, 'repos'>;
 export type DoctorListProps = Pick<ContainerState, 'doctors' | 'loading' | 'error'>;
@@ -19,7 +19,7 @@ function DoctorList({ doctors, loading, error }: ContainerState) {
     return <div>{error}</div>
   }
   if (doctors !== undefined) {
-    return doctors.map(doctorItem => (
+    return doctors.map((doctorItem: Doctor) => (
       <DoctorItem key={`item-${doctorItem.id}`} doctorItem={doctorItem} />
     ));
   }

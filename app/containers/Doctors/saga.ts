@@ -36,20 +36,24 @@ export function* searchDoctors(action: ReturnType<typeof actions.searchDoctorsAc
 
     const doctorsState = yield select(getDoctors);
     const doctorsSearched: [Doctor] = doctorsState.doctors.filter((doctor: Doctor) => {
+
       if (doctorName !== '' && postcode !== '') {
-        if (doctor.doctorName === doctorName && doctor.postcode === parseInt(postcode)) {
+        if (doctor.doctorName === null || doctor.postcode === null) return;
+        if (doctor.doctorName.toLowerCase().includes(doctorName.toLowerCase()) && doctor.postcode === parseInt(postcode)) {
           return doctor;
         }
         return null
       }
       else if (doctorName === '' && postcode !== '') {
+        if (doctor.postcode === null) return;
         if (doctor.postcode === parseInt(postcode)) {
           return doctor;
         }
         return null
       }
       else if (doctorName !== '' && postcode === '') {
-        if (doctor.doctorName === doctorName) {
+        if (doctor.doctorName === null) return;
+        if (doctor.doctorName.toLowerCase().includes(doctorName.toLowerCase())) {
           return doctor;
         }
         return null
@@ -57,8 +61,7 @@ export function* searchDoctors(action: ReturnType<typeof actions.searchDoctorsAc
       return doctor;
 
     });
-    console.info(doctorsState);
-    console.info(doctorsSearched);
+
     if (doctorsSearched.length > 0)
       yield put(actions.searchDoctorsSuccessAction(doctorsSearched));
     else {
