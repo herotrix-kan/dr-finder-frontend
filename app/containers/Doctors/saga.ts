@@ -12,7 +12,7 @@ export function* listDoctors(action: ReturnType<typeof actions.listDoctorsAction
   try {
 
     const apiReturn = yield API.graphql(graphqlOperation(queries.listDoctors));
-    console.info("apiReturn:", apiReturn);
+    // console.info("apiReturn:", apiReturn);
     const doctors = apiReturn.data.listDoctors;
 
     if (doctors)
@@ -29,14 +29,37 @@ export function* listDoctors(action: ReturnType<typeof actions.listDoctorsAction
 export const getDoctors = (state) => state.doctors;
 export function* searchDoctors(action: ReturnType<typeof actions.searchDoctorsAction>, ) {
   try {
+
     const array1 = [1, 4, 9, 16];
     const map1 = array1.map(x => x * 2);
     const { doctorName, postcode } = action.payload;
 
     const doctorsState = yield select(getDoctors);
-    const doctorsSearched: [Doctor] = doctorsState.doctors.map((doctor: Doctor) => doctor);
+    const doctorsSearched: [Doctor] = doctorsState.doctors.filter((doctor: Doctor) => {
+      if (doctorName !== '' && postcode !== '') {
+        if (doctor.doctorName === doctorName && doctor.postcode === parseInt(postcode)) {
+          return doctor;
+        }
+        return null
+      }
+      else if (doctorName === '' && postcode !== '') {
+        if (doctor.postcode === parseInt(postcode)) {
+          return doctor;
+        }
+        return null
+      }
+      else if (doctorName !== '' && postcode === '') {
+        if (doctor.doctorName === doctorName) {
+          return doctor;
+        }
+        return null
+      }
+      return doctor;
+
+    });
+    console.info(doctorsState);
     console.info(doctorsSearched);
-    if (doctorsSearched)
+    if (doctorsSearched.length > 0)
       yield put(actions.searchDoctorsSuccessAction(doctorsSearched));
     else {
       yield put(actions.searchDoctorsFailedAction('no doctor found'));
@@ -44,7 +67,7 @@ export function* searchDoctors(action: ReturnType<typeof actions.searchDoctorsAc
 
   } catch (error) {
     alert(error.message);
-    yield put(actions.listDoctorsFailedAction(error.message));
+    yield put(actions.searchDoctorsFailedAction(error.message));
   }
 }
 // Individual exports for testing

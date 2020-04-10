@@ -12,7 +12,7 @@ import { createStructuredSelector } from "reselect";
 
 import { useInjectSaga } from "utils/injectSaga";
 import { useInjectReducer } from "utils/injectReducer";
-import { makeSelectDoctors, makeSelectLoading, makeSelectError } from "./selectors";
+import { makeSelectDoctorsSearched, makeSelectLoading, makeSelectError } from "./selectors";
 
 import { listDoctorsAction } from './actions';
 import reducer from "./reducer";
@@ -21,7 +21,7 @@ import messages from "./messages";
 import DoctorList from "components/DoctorList";
 import SearchDoctor from "./SearchDoctor";
 const stateSelector = createStructuredSelector({
-  doctors: makeSelectDoctors(),
+  doctors: makeSelectDoctorsSearched(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
 });
@@ -35,9 +35,7 @@ function Doctor(props: Props) {
 
   useEffect(() => {
     // When initial state username is not null, submit the form to load repos
-
     dispatch(listDoctorsAction());
-    console.info("listDoctorsAction");
   }, []);
 
   const { doctors, loading, error } = useSelector(stateSelector);

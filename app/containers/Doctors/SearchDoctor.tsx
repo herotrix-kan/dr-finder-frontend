@@ -27,6 +27,11 @@ const stateSelector = createStructuredSelector({
     isAuthenticating: makeSelectIsAuthenticating(),
 });
 
+const validationSchema = Yup.object().shape({
+    postcode: Yup.number()
+        .min(4, '4 numbers')
+});
+
 interface Props { }
 
 function SearchDoctor(props: Props) {
@@ -43,6 +48,7 @@ function SearchDoctor(props: Props) {
                     doctorName: '',
                     postcode: '',
                 }}
+                validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
                     const { doctorName, postcode } = values;

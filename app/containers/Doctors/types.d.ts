@@ -8,7 +8,7 @@ interface DoctorsState {
   readonly doctorsSearched: Doctor[] | [];
   readonly searchByName: string,
   readonly searchByPostcode: string,
-  readonly error: boolean;
+  readonly error: string | null;
   readonly loading: boolean;
 }
 export interface Doctor {

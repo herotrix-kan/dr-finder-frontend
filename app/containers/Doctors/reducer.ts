@@ -12,7 +12,7 @@ export const initialState: ContainerState = {
   doctorsSearched: [],
   searchByName: "",
   searchByPostcode: "",
-  error: true,
+  error: null,
   loading: false,
 };
 
@@ -24,25 +24,53 @@ function moviesReducer(
     case ActionTypes.LIST_DOCTORS:
       return {
         // Delete prefixed '@' from the github username
-        ...initialState,
+        ...state,
         loading: true,
-        error: false,
+        error: null,
         // loading: action.payload.doctors,
       };
     case ActionTypes.LIST_DOCTORS_SUCCESS:
       return {
+        ...state,
         // Delete prefixed '@' from the github username
         loading: false,
-        error: false,
+        error: null,
         doctors: action.payload,
+        doctorsSearched: action.payload,
       };
+
     case ActionTypes.LIST_DOCTORS_FAILED:
       return {
         // Delete prefixed '@' from the github username
-        ...initialState,
+        ...state,
         loading: false,
         error: action.payload,
       };
+    case ActionTypes.SEARCH_DOCTORS:
+      return {
+        // Delete prefixed '@' from the github username
+        ...state,
+        loading: true,
+        error: null,
+        // loading: action.payload.doctors,
+      };
+    case ActionTypes.SEARCH_DOCTORS_SUCCESS:
+      return {
+        // Delete prefixed '@' from the github username
+
+        ...state,
+        loading: false,
+        error: null,
+        doctorsSearched: action.payload,
+      };
+    case ActionTypes.SEARCH_DOCTORS_FAILED:
+      return {
+        // Delete prefixed '@' from the github username
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
     default:
       return state;
   }

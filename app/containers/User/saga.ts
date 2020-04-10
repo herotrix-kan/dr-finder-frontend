@@ -55,7 +55,7 @@ export function* userConfirmRegister(action: ReturnType<typeof actions.userConfi
     const response = yield Auth.confirmSignUp(username, confirmationCode);
     const id = response.idToken.payload.sub;
     const apiReturn = yield API.graphql(graphqlOperation(mutations.createPatient, { id, username }));
-    console.info("userConfirmRegister", apiReturn);
+    // console.info("userConfirmRegister", apiReturn);
   } catch (error) {
     alert(error.message);
     yield put(actions.userConfirmRegisterFailedAction(error.message));

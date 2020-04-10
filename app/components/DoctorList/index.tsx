@@ -15,8 +15,8 @@ function DoctorList({ doctors, loading, error }: ContainerState) {
     return <List component={LoadingIndicator} />;
   }
 
-  if (error !== false) {
-    return <div>Sorry, there is a api error</div>
+  if (error !== null) {
+    return <div>{error}</div>
   }
   if (doctors !== undefined) {
     return doctors.map(doctorItem => (
