@@ -6,6 +6,7 @@ import { ApplicationRootState } from "types";
 interface DoctorsState {
   readonly doctors: Doctor[] | [];
   readonly doctorsSearched: Doctor[] | [];
+  readonly doctorSelected: Doctor;
   readonly searchByName: string,
   readonly searchByPostcode: string,
   readonly error: string | null;

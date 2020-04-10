@@ -10,6 +10,22 @@ import { ContainerState, ContainerActions } from './types';
 export const initialState: ContainerState = {
   doctors: [],
   doctorsSearched: [],
+  doctorSelected: {
+    sId: 'doctor',
+    id: null,
+    doctorName: null,
+    introduction: null,
+    address: null,
+    suburb: null,
+    postcode: null,
+    speakingLanguage: null,
+    phone: null,
+    email: null,
+    hospitalName: null,
+    photoUrl: null,
+    availableHours: null,
+    bookedHours: null,
+  },
   searchByName: "",
   searchByPostcode: "",
   error: null,
@@ -71,6 +87,30 @@ function moviesReducer(
         error: action.payload,
       };
 
+    case ActionTypes.SELECT_DOCTOR:
+      return {
+        // Delete prefixed '@' from the github username
+        ...state,
+        loading: true,
+        error: null,
+        // loading: action.payload.doctors,
+      };
+    case ActionTypes.SELECT_DOCTOR_SUCCESS:
+      return {
+        // Delete prefixed '@' from the github username
+
+        ...state,
+        loading: false,
+        error: null,
+        doctorSelected: action.payload,
+      };
+    case ActionTypes.SELECT_DOCTOR_FAILED:
+      return {
+        // Delete prefixed '@' from the github username
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

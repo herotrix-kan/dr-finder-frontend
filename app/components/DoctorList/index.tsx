@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import { Redirect, Route, Link } from 'react-router-dom'
 import List from 'components/List';
 import ListItem from 'components/ListItem';
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -20,7 +20,9 @@ function DoctorList({ doctors, loading, error }: ContainerState) {
   }
   if (doctors !== undefined) {
     return doctors.map((doctorItem: Doctor) => (
-      <DoctorItem key={`item-${doctorItem.id}`} doctorItem={doctorItem} />
+      <Link to={`/doctor/${doctorItem.id}`} key={`item - ${doctorItem.id}`}>
+        <DoctorItem doctorItem={doctorItem} />
+      </Link >
     ));
   }
 

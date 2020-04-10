@@ -28,7 +28,7 @@ const stateSelector = createStructuredSelector({
 
 interface Props { }
 
-function Doctor(props: Props) {
+function Doctors(props: Props) {
   // Warning: Add your key to RootState in types/index.d.ts file
   useInjectReducer({ key: "doctors", reducer: reducer });
   useInjectSaga({ key: "doctors", saga: saga });
@@ -60,4 +60,4 @@ function Doctor(props: Props) {
   );
 }
 
-export default memo(Doctor);
+export default memo(Doctors);

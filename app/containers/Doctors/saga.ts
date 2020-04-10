@@ -27,6 +27,7 @@ export function* listDoctors(action: ReturnType<typeof actions.listDoctorsAction
   }
 }
 export const getDoctors = (state) => state.doctors;
+//will move this to actions
 export function* searchDoctors(action: ReturnType<typeof actions.searchDoctorsAction>, ) {
   try {
 
@@ -77,4 +78,5 @@ export function* searchDoctors(action: ReturnType<typeof actions.searchDoctorsAc
 export default function* doctorsSaga() {
   yield takeLatest(ActionTypes.LIST_DOCTORS, listDoctors);
   yield takeLatest(ActionTypes.SEARCH_DOCTORS, searchDoctors);
+
 }
