@@ -95,10 +95,10 @@ function moviesReducer(
         error: null,
         // loading: action.payload.doctors,
       };
+
     case ActionTypes.SELECT_DOCTOR_SUCCESS:
       return {
         // Delete prefixed '@' from the github username
-
         ...state,
         loading: false,
         error: null,

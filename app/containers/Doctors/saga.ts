@@ -31,8 +31,6 @@ export const getDoctors = (state) => state.doctors;
 export function* searchDoctors(action: ReturnType<typeof actions.searchDoctorsAction>, ) {
   try {
 
-    const array1 = [1, 4, 9, 16];
-    const map1 = array1.map(x => x * 2);
     const { doctorName, postcode } = action.payload;
 
     const doctorsState = yield select(getDoctors);
@@ -74,9 +72,28 @@ export function* searchDoctors(action: ReturnType<typeof actions.searchDoctorsAc
     yield put(actions.searchDoctorsFailedAction(error.message));
   }
 }
+
+export function* selectDoctor(action: ReturnType<typeof actions.selectDoctorAction>, ) {
+  try {
+    const id = action.payload;
+    const apiReturn = yield API.graphql(graphqlOperation(queries.getDoctor, { id }));
+    const doctorSelected = apiReturn.data.getDoctor;
+    if (doctorSelected) {
+      yield put(actions.selectDoctorSuccessAction(doctorSelected));
+    }
+    else {
+      yield put(actions.selectDoctorFailedAction("Not find the doctor"));
+    }
+
+  } catch (error) {
+    alert(error.message);
+    yield put(actions.searchDoctorsFailedAction(error.message));
+  }
+}
 // Individual exports for testing
 export default function* doctorsSaga() {
   yield takeLatest(ActionTypes.LIST_DOCTORS, listDoctors);
   yield takeLatest(ActionTypes.SEARCH_DOCTORS, searchDoctors);
+  yield takeLatest(ActionTypes.SELECT_DOCTOR, selectDoctor);
 
 }

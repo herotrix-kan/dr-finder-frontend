@@ -6,6 +6,7 @@
 
 import React, { useEffect, memo } from 'react';
 import { Helmet } from "react-helmet";
+import { RouteComponentProps } from 'react-router-dom';
 import { FormattedMessage } from "react-intl";
 import { useSelector, useDispatch } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -13,6 +14,7 @@ import { createStructuredSelector } from "reselect";
 import { useInjectSaga } from "utils/injectSaga";
 import { useInjectReducer } from "utils/injectReducer";
 import { makeSelectDoctorSelected, makeSelectLoading, makeSelectError } from "./selectors";
+import LoadingIndicator from 'components/LoadingIndicator';
 
 import { selectDoctorAction } from './actions';
 import reducer from "./reducer";
@@ -26,7 +28,7 @@ const stateSelector = createStructuredSelector({
     error: makeSelectError(),
 });
 
-interface Props { }
+interface Props extends RouteComponentProps<any> { }
 
 function Doctor(props: Props) {
     // Warning: Add your key to RootState in types/index.d.ts file
@@ -35,8 +37,8 @@ function Doctor(props: Props) {
 
     useEffect(() => {
         // When initial state username is not null, submit the form to load repos
-        const { match: { params } } = props;
-        dispatch(selectDoctorAction('id'));
+        const id = props.match.params.id;
+        dispatch(selectDoctorAction(id));
     }, []);
 
     const { doctorSelected, loading, error } = useSelector(stateSelector);
@@ -47,16 +49,16 @@ function Doctor(props: Props) {
         error,
     };
 
-    if (loading) { return }
+    if (loading) { return <LoadingIndicator />; }
+    if (error !== null) { return <div>{error}</div> }
     return (
         <div>
             <Helmet>
                 <title>Doctor</title>
                 <meta name="description" content="Description of Doctor" />
             </Helmet>
-            <SearchDoctor />
             <h3>Provider Name</h3>
-            <DoctorList {...doctorsProps} />
+            {doctorSelected.doctorName}
         </div>
     );
 }
