@@ -11,20 +11,21 @@ export const initialState: ContainerState = {
   doctors: [],
   doctorsSearched: [],
   doctorSelected: {
-    sId: 'doctor',
+    pId: 'doctor',
     id: null,
-    doctorName: null,
-    introduction: null,
-    address: null,
-    suburb: null,
+    doctorName: '',
+    introduction: '',
+    address: '',
+    suburb: '',
+    addressState: '',
     postcode: null,
-    speakingLanguage: null,
-    phone: null,
-    email: null,
-    hospitalName: null,
-    photoUrl: null,
-    availableHours: null,
-    bookedHours: null,
+    speakingLanguage: '',
+    phone: '',
+    email: '',
+    hospitalName: '',
+    photoUrl: '',
+    availableHours: '',
+    bookedHours: '',
   },
   searchByName: "",
   searchByPostcode: "",
@@ -32,7 +33,7 @@ export const initialState: ContainerState = {
   loading: false,
 };
 
-function moviesReducer(
+function doctorsReducer(
   state: ContainerState = initialState,
   action: ContainerActions,
 ): ContainerState {
@@ -116,4 +117,4 @@ function moviesReducer(
   }
 }
 
-export default moviesReducer;
+export default doctorsReducer;

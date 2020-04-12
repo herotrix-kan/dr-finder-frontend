@@ -5,6 +5,7 @@ import { ContainerState as AppState } from 'containers/App/types';
 import { ContainerState as HomeState } from 'containers/HomePage/types';
 import { ContainerState as DoctorsState } from 'containers/Doctors/types';
 import { ContainerState as UserState } from 'containers/User/types';
+import { ContainerState as AppointmentsState } from 'containers/Appointments/types';
 
 export interface InjectedStore extends Store {
   injectedReducers: any;
@@ -34,6 +35,7 @@ export interface ApplicationRootState {
   readonly home: HomeState;
   readonly doctors: DoctorsState;
   readonly user: UserState;
+  readonly appointments: AppointmentsState;
   // for testing purposes
   readonly test: any;
 }

@@ -13,20 +13,21 @@ interface DoctorsState {
   readonly loading: boolean;
 }
 export interface Doctor {
-  readonly sId: string;
+  readonly pId: string;
   readonly id: string | null;
-  readonly doctorName: string | null;
-  readonly introduction: string | null;
-  readonly address: string | null;
-  readonly suburb: string | null;
+  readonly doctorName: string;
+  readonly introduction: string;
+  readonly address: string;
+  readonly suburb: string;
+  readonly addressState: string;
   readonly postcode: number | null;
-  readonly speakingLanguage: string | null;
-  readonly phone: string | null;
-  readonly email: string | null;
-  readonly hospitalName: string | null;
-  readonly photoUrl: number | null | null;
-  readonly availableHours: string | null;
-  readonly bookedHours: string | null;
+  readonly speakingLanguage: string;
+  readonly phone: string;
+  readonly email: string;
+  readonly hospitalName: string;
+  readonly photoUrl: string;
+  readonly availableHours: string;
+  readonly bookedHours: string;
 }
 
 /* --- ACTIONS --- */

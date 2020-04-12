@@ -20,7 +20,7 @@ import { selectDoctorAction } from './actions';
 import reducer from "./reducer";
 import saga from "./saga";
 import messages from "./messages";
-import DoctorList from "components/DoctorList";
+import { GreenPanel, Description } from "components/DoctorSingle";
 import SearchDoctor from "./SearchDoctor";
 const stateSelector = createStructuredSelector({
     doctorSelected: makeSelectDoctorSelected(),
@@ -43,11 +43,11 @@ function Doctor(props: Props) {
 
     const { doctorSelected, loading, error } = useSelector(stateSelector);
     const dispatch = useDispatch();
-    const doctorsProps = {
-        doctorSelected,
-        loading,
-        error,
-    };
+    // const doctorsProps = {
+    //     doctorSelected,
+    //     loading,
+    //     error,
+    // };
 
     if (loading) { return <LoadingIndicator />; }
     if (error !== null) { return <div>{error}</div> }
@@ -57,8 +57,10 @@ function Doctor(props: Props) {
                 <title>Doctor</title>
                 <meta name="description" content="Description of Doctor" />
             </Helmet>
-            <h3>Provider Name</h3>
-            {doctorSelected.doctorName}
+            <div>
+                <GreenPanel {...doctorSelected} />
+                <Description {...doctorSelected} />
+            </div>
         </div>
     );
 }
