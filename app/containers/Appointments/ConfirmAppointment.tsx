@@ -34,52 +34,40 @@ const stateSelector = createStructuredSelector({
 
 interface Props extends RouteComponentProps<any> { }
 
-function MakeAppointment(props: Props) {
+function ConfirmAppointment(props: Props) {
     // Warning: Add your key to RootState in types/index.d.ts file
     useInjectReducer({ key: "appointments", reducer: reducer });
     useInjectSaga({ key: "appointments", saga: saga });
 
     const { doctorSelected, newAppointmentNotConfirmed, loginUser, loading, error } = useSelector(stateSelector);
     const dispatch = useDispatch();
-    const calendarProps = {
-        doctorSelected,
-        createAppointmentAction,
-    }
+
+    console.info(doctorSelected);
     if (loading) { return <LoadingIndicator />; }
     if (error !== null) {
         return <div>{error}</div>
     }
-    else if (doctorSelected.id === null) {
+    else if (doctorSelected.id === null || newAppointmentNotConfirmed.doctorId === null) {
         return <Redirect to={{
             pathname: '/doctors',
             state: { from: props.location }
         }} />
     }
-
-    if (newAppointmentNotConfirmed.doctorId !== '') {
-        return <Redirect to={{
-            pathname: '/confirm-appointment',
-            state: { from: props.location }
-        }} />
-    }
+    console.info("newAppointmentNotConfirmed:", newAppointmentNotConfirmed);
     return (
         <div>
             <Helmet>
-                <title>Make appointment</title>
+                <title>Confirm Appointment</title>
                 <meta name="description" content="Description of Doctor" />
             </Helmet>
             <div>
+                <h3>Are these details correct?</h3>
+                <div>
 
-                {/* <Calendar {...doctorSelected} /> */}
-                <button
-                // onClick={
-                //     () => createAppointmentAction()
-                // }
-                ></button>
-                <Calendar {...calendarProps} />
+                </div>
             </div>
         </div>
     );
 }
 
-export default memo(MakeAppointment);
+export default memo(ConfirmAppointment);

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import { Redirect, Route, Link } from 'react-router-dom'
 import 'react-dates/initialize';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 import moment from 'moment';
-
 import List from 'components/List';
 import ListItem from 'components/ListItem';
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -12,8 +12,12 @@ import RepoListItem from 'containers/RepoListItem';
 import DoctorItem from 'components/DoctorItem';
 import { Doctor } from '../../containers/Doctors/types';
 
-// export type DoctorListProps = Pick<ContainerState, 'loading' | 'error'> & Pick<UserData, 'repos'>;
-function Calendar(doctorSelected: Doctor) {
+export type calendarProps = {
+  doctorSelected: Doctor,
+  createAppointmentAction: (date: string, time: string) => void
+};
+function Calendar({ doctorSelected, createAppointmentAction }: calendarProps) {
+  const dispatch = useDispatch();
   const [dateSelected, dateSelect] = useState(moment());
   const weekdays = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const onChange = e => dateSelect(e.target.value);
@@ -28,17 +32,17 @@ function Calendar(doctorSelected: Doctor) {
 
   let unvailableDates = [];
   for (let [key, value] of Object.entries(availableHoursObject)) {
-    console.log(`${key}: ${value}`);
+    // console.log(`${key}: ${value}`);
     if (value.length === 0) {
       unvailableDates.push(key);
     }
   }
-  { console.info("availableHoursObject:", availableHoursObject) }
-  { console.info("unvailableDates:", unvailableDates) }
-  { console.info("bookedHoursObject:", bookedHoursObject) }
-  { console.info("date selected:", getDateSelected) }
-  { console.info("day selected:", getDaySelected) }
-  { console.info("show available time:", getDaySelectedAvailableHours) }
+  // { console.info("availableHoursObject:", availableHoursObject) }
+  // { console.info("unvailableDates:", unvailableDates) }
+  // { console.info("bookedHoursObject:", bookedHoursObject) }
+  // { console.info("date selected:", getDateSelected) }
+  // { console.info("day selected:", getDaySelected) }
+  // { console.info("show available time:", getDaySelectedAvailableHours) }
   return (
     <div>
       <SingleDatePicker
@@ -58,7 +62,7 @@ function Calendar(doctorSelected: Doctor) {
         <h3>Available hours of the selected date</h3>
         {getDaySelectedAvailableHours &&
           getDaySelectedAvailableHours.map((hours, key) => (
-            <p key={`key-${key}`}>{hours}</p>
+            <button onClick={() => dispatch(createAppointmentAction(getDateSelected, hours))} key={`key-${key}`}>{hours}</button>
           ))}
       </div>
     </div>

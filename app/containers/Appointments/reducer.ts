@@ -13,8 +13,17 @@ export const initialState: ContainerState = {
     id: null,
     doctorId: "",
     patientId: "",
-    appointmentStartDateTime: "",
-    appointmentFinishDateTime: "",
+    appointmentDateTime: "",
+    appointmentStatus: "",
+    timezone: "Melbourne",
+    patientName: "",
+    doctorName: "",
+    location: "",
+  },
+  newAppointmentNotConfirmed: {
+    doctorId: "",
+    patientId: "",
+    appointmentDateTime: "",
     appointmentStatus: "",
     timezone: "Melbourne",
     patientName: "",
@@ -44,7 +53,7 @@ function appointmentsReducer(
         // Delete prefixed '@' from the github username
         loading: false,
         error: null,
-        newAppointment: action.payload,
+        newAppointmentNotConfirmed: action.payload,
       };
 
     case ActionTypes.CREAT_APPOINTMENT_FAILED:

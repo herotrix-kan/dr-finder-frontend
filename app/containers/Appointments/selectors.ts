@@ -26,6 +26,14 @@ export const makeSelectNewAppointment = () =>
     },
   );
 
+export const makeSelectNewAppointmentNotConfirmed = () =>
+  createSelector(
+    selectAppointmentsDomain,
+    substate => {
+      return substate.newAppointmentNotConfirmed;
+    },
+  );
+
 export const makeSelectLoading = () =>
   createSelector(
     selectAppointmentsDomain,

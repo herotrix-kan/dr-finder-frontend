@@ -66,7 +66,6 @@ function Login(props: Props) {
       }
     }
   }
-  if (isAuthenticating) return
   if (!isAuthenticated)
     return (
       <div>

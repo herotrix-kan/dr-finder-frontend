@@ -8,92 +8,37 @@ import request from 'utils/request';
 import * as queries from 'graphql/queries';
 // import * as mutations from 'graphql/mutations';
 
-// export function* listDoctors(action: ReturnType<typeof actions.listDoctorsAction>, ) {
-//   try {
+export const getDoctorSelected = (state) => state.doctors.doctorSelected;
+export const getLoginUser = (state) => state.user.loginUser;
+export function* createAppointment(action: ReturnType<typeof actions.createAppointmentAction>, ) {
 
-//     const apiReturn = yield API.graphql(graphqlOperation(queries.listDoctors));
-//     // console.info("apiReturn:", apiReturn);
-//     const doctors = apiReturn.data.listDoctors;
+  try {
+    const { date, time } = action.payload;
+    const doctorSelected = yield select(getDoctorSelected);
+    const loginUser = yield select(getLoginUser);
+    const appointmentDateTime = { [date]: time }.toString();
+    const fullAddress = `${doctorSelected.address} ${doctorSelected.suburb},
+    
+    ${doctorSelected.addressState} ${doctorSelected.postcode}`;
 
-//     if (doctors)
-//       yield put(actions.listDoctorsSuccessAction(doctors));
-//     else {
-//       yield put(actions.listDoctorsFailedAction('no doctor found'));
-//     }
+    const newAppointmentNotConfirmed = {
+      doctorId: doctorSelected.id,
+      patientId: loginUser.id,
+      appointmentDateTime,
+      appointmentStatus: "upcoming",
+      timezone: doctorSelected.suburb,
+      patientName: loginUser.patientName,
+      doctorName: doctorSelected.doctorName,
+      location: fullAddress,
+    }
+    yield put(actions.createAppointmentSuccessAction(newAppointmentNotConfirmed));
+  } catch (error) {
+    yield put(actions.createAppointmentFailedAction(error.message));
+  }
+}
 
-//   } catch (error) {
-//     alert(error.message);
-//     yield put(actions.listDoctorsFailedAction(error.message));
-//   }
-// }
-// export const getDoctors = (state) => state.doctors;
-// //will move this to actions
-// export function* searchDoctors(action: ReturnType<typeof actions.searchDoctorsAction>, ) {
-//   try {
 
-//     const { doctorName, postcode } = action.payload;
-
-//     const doctorsState = yield select(getDoctors);
-//     const doctorsSearched: [Doctor] = doctorsState.doctors.filter((doctor: Doctor) => {
-
-//       if (doctorName !== '' && postcode !== '') {
-//         if (doctor.doctorName === null || doctor.postcode === null) return;
-//         if (doctor.doctorName.toLowerCase().includes(doctorName.toLowerCase()) && doctor.postcode === parseInt(postcode)) {
-//           return doctor;
-//         }
-//         return null
-//       }
-//       else if (doctorName === '' && postcode !== '') {
-//         if (doctor.postcode === null) return;
-//         if (doctor.postcode === parseInt(postcode)) {
-//           return doctor;
-//         }
-//         return null
-//       }
-//       else if (doctorName !== '' && postcode === '') {
-//         if (doctor.doctorName === null) return;
-//         if (doctor.doctorName.toLowerCase().includes(doctorName.toLowerCase())) {
-//           return doctor;
-//         }
-//         return null
-//       }
-//       return doctor;
-
-//     });
-
-//     if (doctorsSearched.length > 0)
-//       yield put(actions.searchDoctorsSuccessAction(doctorsSearched));
-//     else {
-//       yield put(actions.searchDoctorsFailedAction('no doctor found'));
-//     }
-
-//   } catch (error) {
-//     alert(error.message);
-//     yield put(actions.searchDoctorsFailedAction(error.message));
-//   }
-// }
-
-// export function* selectDoctor(action: ReturnType<typeof actions.selectDoctorAction>, ) {
-//   try {
-//     const id = action.payload;
-//     const apiReturn = yield API.graphql(graphqlOperation(queries.getDoctor, { id }));
-//     const doctorSelected = apiReturn.data.getDoctor;
-//     if (doctorSelected) {
-//       yield put(actions.selectDoctorSuccessAction(doctorSelected));
-//     }
-//     else {
-//       yield put(actions.selectDoctorFailedAction("Not find the doctor"));
-//     }
-
-//   } catch (error) {
-//     alert(error.message);
-//     yield put(actions.searchDoctorsFailedAction(error.message));
-//   }
-// }
 // Individual exports for testing
 export default function* doctorsSaga() {
-  // yield takeLatest(ActionTypes.LIST_DOCTORS, listDoctors);
-  // yield takeLatest(ActionTypes.SEARCH_DOCTORS, searchDoctors);
-  // yield takeLatest(ActionTypes.SELECT_DOCTOR, selectDoctor);
-
+  yield takeLatest(ActionTypes.CREAT_APPOINTMENT, createAppointment);
 }

@@ -42,8 +42,7 @@ const createAppointment = `
 	mutation (
         $doctorId: String!,
         $patientId: String!,
-        $appointmentStartDateTime: String!, 
-        $appointmentFinishDateTime: String!, 
+        $appointmentDateTime: String!, 
         $reason: String!, 
         $timezone: String!,
         $patientName: String!,
@@ -53,9 +52,7 @@ const createAppointment = `
 		createAppointment(
             doctorId: $doctorId
             patientId: $patientId
-            appointmentStartDateTime: $appointmentStartDateTime
-            appointmentFinishDateTime: $appointmentFinishDateTime
-            appointmentStatus: $appointmentStatus
+            appointmentDateTime: $appointmentDateTime
             reason: $reason
             timezone: $timezone
             patientName: $patientName
@@ -66,8 +63,7 @@ const createAppointment = `
             id
             doctorId
             patientId
-            appointmentStartDateTime
-            appointmentFinishDateTime
+            appointmentDateTime
             appointmentStatus
             reason
             timezone

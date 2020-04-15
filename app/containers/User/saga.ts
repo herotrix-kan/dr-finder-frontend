@@ -30,8 +30,13 @@ export function* userReturnLogin(action: ReturnType<typeof actions.userReturnLog
     const id = action.payload;
     const apiReturn = yield API.graphql(graphqlOperation(queries.getPatient, { id }));
     const patient = apiReturn.data.getPatient;
+    if (patient) {
+      yield put(actions.userLoginSuccessAction(patient));
+    }
+    else {
+      yield put(actions.userLoginFailedAction("You have not login"));
+    }
 
-    yield put(actions.userLoginSuccessAction(patient));
   } catch (error) {
     alert(error.message);
     yield put(actions.userLoginFailedAction(error.message));

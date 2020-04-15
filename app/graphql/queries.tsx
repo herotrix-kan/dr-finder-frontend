@@ -12,8 +12,7 @@ const getPatient = `query ($id: String!) {
             phone
             email
             appointments{
-                appointmentStartDateTime
-                appointmentFinishDateTime
+                appointmentDateTime
                 appointmentStatus
                 reason
                 timezone
@@ -43,8 +42,7 @@ const getDoctor = `query ($id: String!) {
             availableHours
             bookedHours
             appointments{
-              appointmentStartDateTime
-              appointmentFinishDateTime
+              appointmentDateTime
               appointmentStatus
               reason
               timezone
@@ -83,8 +81,7 @@ const getAppointment = `query ($id: String!) {
                 id
                 doctorId
                 patientId
-                appointmentStartDateTime
-                appointmentFinishDateTime
+                appointmentDateTime
                 appointmentStatus
                 reason
                 timezone

@@ -16,7 +16,7 @@ import Amplify from 'aws-amplify';
 
 import { Doctors, Doctor } from 'containers/Doctors';
 import { Login, Register, Confirmation } from 'containers/User';
-import { MakeAppointment } from 'containers/Appointments';
+import { MakeAppointment, ConfirmAppointment } from 'containers/Appointments';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
@@ -69,7 +69,7 @@ export default function App() {
         <Route exact path="/doctors" component={Doctors} />
         <Route exact path="/doctor/:id" component={Doctor} />
         <Route exact path="/make-appointment" component={MakeAppointment} />
-
+        <Route exact path="/confirm-appointment" component={ConfirmAppointment} />
         <Route path="" component={NotFoundPage} />
       </Switch>
       <Footer />
