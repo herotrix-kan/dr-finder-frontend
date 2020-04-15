@@ -8,6 +8,7 @@ interface AppointmentsState {
   newAppointmentNotConfirmed: AppointmentNotConfirmed;
   readonly error: string | null;
   readonly loading: boolean;
+  readonly newAppointmentRequested: boolean;
 }
 
 export interface Appointment {
@@ -17,20 +18,24 @@ export interface Appointment {
   readonly patientId: string;
   readonly appointmentDateTime: string;
   readonly appointmentStatus: string;
+  readonly reason: string;
   readonly timezone: string;
   readonly patientName: string;
   readonly doctorName: string;
   readonly location: string;
+  readonly hospitalName: string;
 }
 export interface AppointmentNotConfirmed {
   readonly doctorId: string;
   readonly patientId: string;
   readonly appointmentDateTime: string;
   readonly appointmentStatus: string;
+  readonly reason: string;
   readonly timezone: string;
   readonly patientName: string;
   readonly doctorName: string;
   readonly location: string;
+  readonly hospitalName: string;
 }
 
 /* --- ACTIONS --- */

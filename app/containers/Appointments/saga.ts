@@ -26,11 +26,14 @@ export function* createAppointment(action: ReturnType<typeof actions.createAppoi
       patientId: loginUser.id,
       appointmentDateTime,
       appointmentStatus: "upcoming",
+      reason: "sick",
       timezone: doctorSelected.suburb,
       patientName: loginUser.patientName,
       doctorName: doctorSelected.doctorName,
       location: fullAddress,
+      hospitalName: doctorSelected.hospitalName,
     }
+
     yield put(actions.createAppointmentSuccessAction(newAppointmentNotConfirmed));
   } catch (error) {
     yield put(actions.createAppointmentFailedAction(error.message));

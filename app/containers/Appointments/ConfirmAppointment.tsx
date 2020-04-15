@@ -16,10 +16,10 @@ import { useInjectSaga } from "utils/injectSaga";
 import { useInjectReducer } from "utils/injectReducer";
 import { makeSelectDoctorSelected } from "containers/Doctors/selectors";
 import { makeSelectUser } from "containers/User/selectors";
-import { makeSelectNewAppointment, makeSelectNewAppointmentNotConfirmed, makeSelectLoading, makeSelectError } from "./selectors";
+import { makeSelectNewAppointment, makeSelectNewAppointmentNotConfirmed, makeSelectLoading, makeSelectError, makeSelectNewAppointmentRequested } from "./selectors";
 import LoadingIndicator from 'components/LoadingIndicator';
 
-import { createAppointmentAction } from './actions';
+import { createAppointmentAction, setNewAppointmentRequestedAction } from './actions';
 import reducer from "./reducer";
 import saga from "./saga";
 import messages from "./messages";
@@ -30,6 +30,7 @@ const stateSelector = createStructuredSelector({
     loginUser: makeSelectUser(),
     loading: makeSelectLoading(),
     error: makeSelectError(),
+    newAppointmentRequested: makeSelectNewAppointmentRequested(),
 });
 
 interface Props extends RouteComponentProps<any> { }
@@ -39,10 +40,8 @@ function ConfirmAppointment(props: Props) {
     useInjectReducer({ key: "appointments", reducer: reducer });
     useInjectSaga({ key: "appointments", saga: saga });
 
-    const { doctorSelected, newAppointmentNotConfirmed, loginUser, loading, error } = useSelector(stateSelector);
+    const { doctorSelected, newAppointmentNotConfirmed, newAppointmentRequested, loginUser, loading, error } = useSelector(stateSelector);
     const dispatch = useDispatch();
-
-    console.info(doctorSelected);
     if (loading) { return <LoadingIndicator />; }
     if (error !== null) {
         return <div>{error}</div>
@@ -53,18 +52,38 @@ function ConfirmAppointment(props: Props) {
             state: { from: props.location }
         }} />
     }
-    console.info("newAppointmentNotConfirmed:", newAppointmentNotConfirmed);
+    useEffect(() => {
+        dispatch(setNewAppointmentRequestedAction(false));
+    }, []);
+
     return (
         <div>
             <Helmet>
                 <title>Confirm Appointment</title>
                 <meta name="description" content="Description of Doctor" />
             </Helmet>
+            <p>
+                Your appointment is not booked yet
+            </p>
             <div>
                 <h3>Are these details correct?</h3>
                 <div>
-
+                    {/* <h5>{newAppointmentNotConfirmed.appointmentDateTime}</h5> */}
+                    <p>{newAppointmentNotConfirmed.timezone} Line</p>
                 </div>
+                <div>
+                    <h5>{newAppointmentNotConfirmed.doctorName}</h5>
+                    <p>Reason: {newAppointmentNotConfirmed.reason}</p>
+                    <p>30 mins Patient: {newAppointmentNotConfirmed.patientName}</p>
+                </div>
+                <div>
+                    <h5>{newAppointmentNotConfirmed.hospitalName}</h5>
+                    <p>{newAppointmentNotConfirmed.location}</p>
+                </div>
+            </div>
+            <div>
+                <button>Yes, Book Now</button>
+                <Link to="/make-appointment"> <button>No, Go Back </button></Link>
             </div>
         </div>
     );

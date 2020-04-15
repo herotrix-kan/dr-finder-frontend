@@ -16,10 +16,10 @@ import { useInjectSaga } from "utils/injectSaga";
 import { useInjectReducer } from "utils/injectReducer";
 import { makeSelectDoctorSelected } from "containers/Doctors/selectors";
 import { makeSelectUser } from "containers/User/selectors";
-import { makeSelectNewAppointment, makeSelectNewAppointmentNotConfirmed, makeSelectLoading, makeSelectError } from "./selectors";
+import { makeSelectNewAppointment, makeSelectNewAppointmentNotConfirmed, makeSelectLoading, makeSelectError, makeSelectNewAppointmentRequested } from "./selectors";
 import LoadingIndicator from 'components/LoadingIndicator';
 
-import { createAppointmentAction } from './actions';
+import { createAppointmentAction, setNewAppointmentRequestedAction } from './actions';
 import reducer from "./reducer";
 import saga from "./saga";
 import messages from "./messages";
@@ -30,6 +30,7 @@ const stateSelector = createStructuredSelector({
     loginUser: makeSelectUser(),
     loading: makeSelectLoading(),
     error: makeSelectError(),
+    newAppointmentRequested: makeSelectNewAppointmentRequested(),
 });
 
 interface Props extends RouteComponentProps<any> { }
@@ -39,7 +40,7 @@ function MakeAppointment(props: Props) {
     useInjectReducer({ key: "appointments", reducer: reducer });
     useInjectSaga({ key: "appointments", saga: saga });
 
-    const { doctorSelected, newAppointmentNotConfirmed, loginUser, loading, error } = useSelector(stateSelector);
+    const { doctorSelected, newAppointmentNotConfirmed, newAppointmentRequested, loginUser, loading, error } = useSelector(stateSelector);
     const dispatch = useDispatch();
     const calendarProps = {
         doctorSelected,
@@ -56,7 +57,7 @@ function MakeAppointment(props: Props) {
         }} />
     }
 
-    if (newAppointmentNotConfirmed.doctorId !== '') {
+    if (newAppointmentRequested) {
         return <Redirect to={{
             pathname: '/confirm-appointment',
             state: { from: props.location }

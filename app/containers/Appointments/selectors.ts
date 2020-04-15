@@ -49,3 +49,11 @@ export const makeSelectError = () =>
       return substate.error;
     },
   );
+
+export const makeSelectNewAppointmentRequested = () =>
+  createSelector(
+    selectAppointmentsDomain,
+    substate => {
+      return substate.newAppointmentRequested;
+    },
+  );
