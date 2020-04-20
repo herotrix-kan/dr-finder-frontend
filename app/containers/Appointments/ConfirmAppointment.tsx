@@ -16,10 +16,10 @@ import { useInjectSaga } from "utils/injectSaga";
 import { useInjectReducer } from "utils/injectReducer";
 import { makeSelectDoctorSelected } from "containers/Doctors/selectors";
 import { makeSelectUser } from "containers/User/selectors";
-import { makeSelectNewAppointment, makeSelectNewAppointmentNotConfirmed, makeSelectLoading, makeSelectError, makeSelectNewAppointmentRequested } from "./selectors";
+import { makeSelectNewAppointment, makeSelectNewAppointmentNotConfirmed, makeSelectLoading, makeSelectError, makeSelectNewAppointmentRequested, makeSelectNewAppointmentConfirmSuccess } from "./selectors";
 import LoadingIndicator from 'components/LoadingIndicator';
 
-import { createAppointmentAction, setNewAppointmentRequestedAction } from './actions';
+import { createAppointmentAction, setNewAppointmentRequestedAction, confirmAppointmentAction } from './actions';
 import reducer from "./reducer";
 import saga from "./saga";
 import messages from "./messages";
@@ -31,6 +31,7 @@ const stateSelector = createStructuredSelector({
     loading: makeSelectLoading(),
     error: makeSelectError(),
     newAppointmentRequested: makeSelectNewAppointmentRequested(),
+    newAppointmentConfirmSuccess: makeSelectNewAppointmentConfirmSuccess(),
 });
 
 interface Props extends RouteComponentProps<any> { }
@@ -40,13 +41,19 @@ function ConfirmAppointment(props: Props) {
     useInjectReducer({ key: "appointments", reducer: reducer });
     useInjectSaga({ key: "appointments", saga: saga });
 
-    const { doctorSelected, newAppointmentNotConfirmed, newAppointmentRequested, loginUser, loading, error } = useSelector(stateSelector);
+    const { doctorSelected, newAppointmentNotConfirmed, newAppointmentConfirmSuccess, newAppointmentRequested, loginUser, loading, error } = useSelector(stateSelector);
     const dispatch = useDispatch();
     if (loading) { return <LoadingIndicator />; }
     if (error !== null) {
         return <div>{error}</div>
     }
-    else if (doctorSelected.id === null || newAppointmentNotConfirmed.doctorId === null) {
+    else if (newAppointmentConfirmSuccess) {
+        return <Redirect to={{
+            pathname: '/appointments',
+            state: { from: props.location }
+        }} />
+    }
+    else if (doctorSelected.id === null || newAppointmentNotConfirmed === null) {
         return <Redirect to={{
             pathname: '/doctors',
             state: { from: props.location }
@@ -82,7 +89,7 @@ function ConfirmAppointment(props: Props) {
                 </div>
             </div>
             <div>
-                <button>Yes, Book Now</button>
+                <div className="button" onClick={() => dispatch(confirmAppointmentAction())}>Yes, Book Now</div>
                 <Link to="/make-appointment"> <button>No, Go Back </button></Link>
             </div>
         </div>

@@ -8,35 +8,12 @@ import ActionTypes from './constants';
 import { ContainerState, ContainerActions } from './types';
 
 export const initialState: ContainerState = {
-  newAppointment: {
-    pId: "appointment",
-    id: null,
-    doctorId: "",
-    patientId: "",
-    appointmentDateTime: "",
-    appointmentStatus: "",
-    reason: "",
-    timezone: "Melbourne",
-    patientName: "",
-    doctorName: "",
-    location: "",
-    hospitalName: "",
-  },
-  newAppointmentNotConfirmed: {
-    doctorId: "",
-    patientId: "",
-    appointmentDateTime: "",
-    appointmentStatus: "",
-    reason: "",
-    timezone: "Melbourne",
-    patientName: "",
-    doctorName: "",
-    location: "",
-    hospitalName: "",
-  },
+  newAppointment: null,
+  newAppointmentNotConfirmed: null,
   error: null,
   loading: false,
   newAppointmentRequested: false,
+  newAppointmentConfirmSuccess: false,
 };
 
 function appointmentsReducer(
@@ -50,6 +27,7 @@ function appointmentsReducer(
         ...state,
         loading: true,
         error: null,
+        newAppointmentConfirmSuccess: false,
         // loading: action.payload.doctors,
       };
     case ActionTypes.CREAT_APPOINTMENT_SUCCESS:
@@ -77,6 +55,34 @@ function appointmentsReducer(
         newAppointmentRequested: action.payload,
       };
 
+    case ActionTypes.CONFIRM_APPOINTMENT:
+      return {
+        // Delete prefixed '@' from the github username
+        ...state,
+        loading: true,
+        error: null,
+        // loading: action.payload.doctors,
+      };
+    case ActionTypes.CONFIRM_APPOINTMENT_SUCCESS:
+      console.info("CONFIRM_APPOINTMENT_SUCCESS");
+      return {
+        ...state,
+        // Delete prefixed '@' from the github username
+        loading: false,
+        error: null,
+        newAppointment: action.payload,
+        newAppointmentNotConfirmed: null,
+        newAppointmentRequested: false,
+        newAppointmentConfirmSuccess: true,
+      };
+
+    case ActionTypes.CONFIRM_APPOINTMENT_FAILED:
+      return {
+        // Delete prefixed '@' from the github username
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

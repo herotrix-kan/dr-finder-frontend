@@ -196,6 +196,8 @@ kill -9 PID
 ```
 
 
-1.confirmation registration issue
+1.confirmation registration issue, login issue
 2.hide header of login page
 3.whats loadable
+4. did not add booked hours to calendar
+5. time and date format error

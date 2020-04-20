@@ -57,3 +57,11 @@ export const makeSelectNewAppointmentRequested = () =>
       return substate.newAppointmentRequested;
     },
   );
+
+export const makeSelectNewAppointmentConfirmSuccess = () =>
+  createSelector(
+    selectAppointmentsDomain,
+    substate => {
+      return substate.newAppointmentConfirmSuccess;
+    },
+  );

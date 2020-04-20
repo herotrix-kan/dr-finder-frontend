@@ -4,11 +4,12 @@ import { ApplicationRootState } from "types";
 
 /* --- STATE --- */
 interface AppointmentsState {
-  readonly newAppointment: Appointment;
-  newAppointmentNotConfirmed: AppointmentNotConfirmed;
+  readonly newAppointment: Appointment | null;
+  readonly newAppointmentNotConfirmed: AppointmentNotConfirmed | null;
   readonly error: string | null;
   readonly loading: boolean;
   readonly newAppointmentRequested: boolean;
+  readonly newAppointmentConfirmSuccess: boolean;
 }
 
 export interface Appointment {
@@ -29,7 +30,6 @@ export interface AppointmentNotConfirmed {
   readonly doctorId: string;
   readonly patientId: string;
   readonly appointmentDateTime: string;
-  readonly appointmentStatus: string;
   readonly reason: string;
   readonly timezone: string;
   readonly patientName: string;
