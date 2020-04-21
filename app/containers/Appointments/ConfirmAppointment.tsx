@@ -1,6 +1,6 @@
 /*
  *
- * Doctor
+ * Confirm Appointment
  *
  */
 
@@ -47,53 +47,63 @@ function ConfirmAppointment(props: Props) {
     // if (error !== null) {
     //     return <div>{error}</div>
     // } why does it cause problem?
-    if (newAppointmentConfirmSuccess) {
-        return <Redirect to={{
-            pathname: '/appointments',
-            state: { from: props.location }
-        }} />
-    }
-    if (newAppointmentNotConfirmed === null) {
-        return <Redirect to={{
-            pathname: '/doctors',
-            state: { from: props.location }
-        }} />
-    }
+
+    // useEffect(() => {
+    //     if (newAppointmentConfirmSuccess) {
+    //         props.history.push('/appointments', { from: props.location });
+    //     }
+    // }, [newAppointmentConfirmSuccess]);
     useEffect(() => {
         dispatch(setNewAppointmentRequestedAction(false));
     }, []);
-
-    return (
-        <div>
-            <Helmet>
-                <title>Confirm Appointment</title>
-                <meta name="description" content="Description of Doctor" />
-            </Helmet>
-            <p>
-                Your appointment is not booked yet
+    // console.info("newAppointmentConfirmSuccess:", newAppointmentConfirmSuccess);
+    // console.info("newAppointmentNotConfirmed:", newAppointmentNotConfirmed);
+    if (newAppointmentConfirmSuccess) {
+        return (<Redirect to={{
+            pathname: '/appointments',
+            state: { from: props.location }
+        }} />);
+    }
+    else if (newAppointmentNotConfirmed === null) {
+        return (<Redirect to={{
+            pathname: '/doctors',
+            state: { from: props.location }
+        }} />);
+    }
+    else {
+        return (
+            <div>
+                <Helmet>
+                    <title>Confirm Appointment</title>
+                    <meta name="description" content="Description of Doctor" />
+                </Helmet>
+                <p>
+                    Your appointment is not booked yet
             </p>
-            <div>
-                <h3>Are these details correct?</h3>
                 <div>
-                    <h5>{newAppointmentNotConfirmed.appointmentDate}, {newAppointmentNotConfirmed.appointmentTime}</h5>
-                    <p>{newAppointmentNotConfirmed.timezone} Line</p>
+                    <h3>Are these details correct?</h3>
+                    <div>
+                        <h5>{newAppointmentNotConfirmed.appointmentDate}, {newAppointmentNotConfirmed.appointmentTime}</h5>
+                        <p>{newAppointmentNotConfirmed.timezone} Line</p>
+                    </div>
+                    <div>
+                        <h5>{newAppointmentNotConfirmed.doctorName}</h5>
+                        <p>Reason: {newAppointmentNotConfirmed.reason}</p>
+                        <p>30 mins Patient: {newAppointmentNotConfirmed.patientName}</p>
+                    </div>
+                    <div>
+                        <h5>{newAppointmentNotConfirmed.hospitalName}</h5>
+                        <p>{newAppointmentNotConfirmed.location}</p>
+                    </div>
                 </div>
                 <div>
-                    <h5>{newAppointmentNotConfirmed.doctorName}</h5>
-                    <p>Reason: {newAppointmentNotConfirmed.reason}</p>
-                    <p>30 mins Patient: {newAppointmentNotConfirmed.patientName}</p>
-                </div>
-                <div>
-                    <h5>{newAppointmentNotConfirmed.hospitalName}</h5>
-                    <p>{newAppointmentNotConfirmed.location}</p>
+                    <div className="button" onClick={() => dispatch(confirmAppointmentAction())}>Yes, Book Now</div>
+                    <Link to="/make-appointment"> <button>No, Go Back </button></Link>
                 </div>
             </div>
-            <div>
-                <div className="button" onClick={() => dispatch(confirmAppointmentAction())}>Yes, Book Now</div>
-                <Link to="/make-appointment"> <button>No, Go Back </button></Link>
-            </div>
-        </div>
-    );
+        );
+    }
+
 }
 
 export default memo(ConfirmAppointment);

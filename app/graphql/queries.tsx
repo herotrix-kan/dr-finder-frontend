@@ -94,6 +94,24 @@ const getAppointment = `query ($id: String!) {
             }
         `;
 
+const listAppointments = `query ($id: String!) {
+    listAppointments(id: $id) {
+                pId
+                id
+                doctorId
+                patientId
+                appointmentDateTime
+                appointmentStatus
+                reason
+                timezone
+                patientName
+                doctorName
+                location
+                updatedAt
+                createdAt
+                }
+            }
+        `;
 
-export { getPatient, getDoctor, listDoctors, getAppointment };
+export { getPatient, getDoctor, listDoctors, getAppointment, listAppointments };
 

@@ -4,6 +4,7 @@ import { ApplicationRootState } from "types";
 
 /* --- STATE --- */
 interface AppointmentsState {
+  readonly appointmentList: [Appointment] | [];
   readonly newAppointment: Appointment | null;
   readonly newAppointmentNotConfirmed: AppointmentNotConfirmed | null;
   readonly error: string | null;

@@ -201,3 +201,4 @@ kill -9 PID
 3.whats loadable
 4. did not add booked hours to calendar
 5. time and date format error
+6. will add booked day to doctor

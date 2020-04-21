@@ -19,3 +19,7 @@ export const confirmAppointmentSuccessAction = (appointment: Appointment) => act
 export const confirmAppointmentFailedAction = (error: string) => action(ActionTypes.CONFIRM_APPOINTMENT_FAILED, error);
 
 export const setNewAppointmentRequestedAction = (isReqiested: boolean) => action(ActionTypes.SET_NEW_APPOINTMENT_REQUESTED, isReqiested);
+
+export const listAppointmentsAction = () => action(ActionTypes.LIST_APPOINTMENTS, {});
+export const listAppointmentsSuccessAction = (appointments: [Appointment]) => action(ActionTypes.LIST_APPOINTMENTS_SUCCESS, appointments);
+export const listAppointmentsFailedAction = (error: string) => action(ActionTypes.LIST_APPOINTMENTS_FAILED, error);

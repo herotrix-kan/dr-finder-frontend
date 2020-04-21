@@ -1,6 +1,6 @@
 /*
  *
- * Doctors reducer
+ * Appointments reducer
  *
  */
 
@@ -8,6 +8,7 @@ import ActionTypes from './constants';
 import { ContainerState, ContainerActions } from './types';
 
 export const initialState: ContainerState = {
+  appointmentList: [],
   newAppointment: null,
   newAppointmentNotConfirmed: null,
   error: null,
@@ -65,7 +66,8 @@ function appointmentsReducer(
         // loading: action.payload.doctors,
       };
     case ActionTypes.CONFIRM_APPOINTMENT_SUCCESS:
-      console.info("CONFIRM_APPOINTMENT_SUCCESS");
+      const oldAppointments = [...state.appointmentList];
+      console.info("oldAppointments", oldAppointments);
       return {
         ...state,
         // Delete prefixed '@' from the github username
@@ -75,9 +77,37 @@ function appointmentsReducer(
         newAppointmentNotConfirmed: null,
         newAppointmentRequested: false,
         newAppointmentConfirmSuccess: true,
+        appointmentList: oldAppointments.unshift(action.payload),
       };
 
     case ActionTypes.CONFIRM_APPOINTMENT_FAILED:
+      return {
+        // Delete prefixed '@' from the github username
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    case ActionTypes.LIST_APPOINTMENTS:
+      console.info("CONFIRM_APPOINTMENT");
+      return {
+        // Delete prefixed '@' from the github username
+        ...state,
+        loading: true,
+        error: null,
+        // loading: action.payload.doctors,
+      };
+    case ActionTypes.LIST_APPOINTMENTS_SUCCESS:
+      console.info("CONFIRM_APPOINTMENT_SUCCESS");
+      return {
+        ...state,
+        // Delete prefixed '@' from the github username
+        loading: false,
+        error: null,
+        appointments: action.payload,
+      };
+
+    case ActionTypes.LIST_APPOINTMENTS_FAILED:
       return {
         // Delete prefixed '@' from the github username
         ...state,

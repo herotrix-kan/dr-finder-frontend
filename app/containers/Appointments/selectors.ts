@@ -3,7 +3,7 @@ import { ApplicationRootState } from 'types';
 import { initialState } from './reducer';
 
 /**
- * Direct selector to the doctors state domain
+ * Direct selector to the appointments state domain
  */
 
 const selectAppointmentsDomain = (state: ApplicationRootState) => {
@@ -15,7 +15,7 @@ const selectAppointmentsDomain = (state: ApplicationRootState) => {
  */
 
 /**
- * Default selector used by Doctors
+ * Default selector used by Appointments
  */
 
 export const makeSelectNewAppointment = () =>
@@ -65,3 +65,12 @@ export const makeSelectNewAppointmentConfirmSuccess = () =>
       return substate.newAppointmentConfirmSuccess;
     },
   );
+
+export const makeSelectAppointments = () =>
+  createSelector(
+    selectAppointmentsDomain,
+    substate => {
+      return substate.appointments;
+    },
+  );
+

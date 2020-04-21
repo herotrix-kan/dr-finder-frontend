@@ -1,5 +1,5 @@
 /**
- * Asynchronously loads the component for Doctors
+ * Asynchronously loads the component for Appointments
  */
 
 import * as React from 'react';

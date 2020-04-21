@@ -1,5 +1,5 @@
 /*
- * Doctors Messages
+ * Appointments Messages
  *
  * This contains all the text for the Doctors container.
  */

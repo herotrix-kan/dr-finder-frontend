@@ -6,6 +6,7 @@ import * as actions from './actions';
 // import {  } from './types';
 import request from 'utils/request';
 import * as mutations from 'graphql/mutations';
+import * as queries from 'graphql/queries';
 // import * as mutations from 'graphql/mutations';
 
 export const getDoctorSelected = (state: any) => state.doctors.doctorSelected;
@@ -45,25 +46,10 @@ export function* createAppointment(action: ReturnType<typeof actions.createAppoi
 
 export function* confirmAppointment(action: ReturnType<typeof actions.confirmAppointmentAction>, ) {
   try {
-
-    console.info("I am here:");
     const appointmentNotConfirmed = yield select(getNewAppointmentNotConfirmed);
-    console.info("appointmentNotConfirmed:", appointmentNotConfirmed);
     delete appointmentNotConfirmed.appointmentDate;
     delete appointmentNotConfirmed.appointmentTime;
     const apiReturn = yield API.graphql(graphqlOperation(mutations.createAppointment, appointmentNotConfirmed));
-    // const apiReturn = yield API.graphql(graphqlOperation(mutations.createAppointment, {
-    //   doctorId: "doctor_0",
-    //   patientId: "patient_DB42",
-    //   appointmentDateTime: "31313",
-    //   reason: "sick",
-    //   timezone: "melbourne",
-    //   patientName: "Zhi",
-    //   doctorName: "Kan",
-    //   location: "doncaster",
-    //   hospitalName: "Best one"
-    // }));
-
     console.info("appointmentNotConfirmed2:", apiReturn);
     if (apiReturn.data.createAppointment) {
       yield put(actions.confirmAppointmentSuccessAction(apiReturn.data.createAppointment));
@@ -77,9 +63,24 @@ export function* confirmAppointment(action: ReturnType<typeof actions.confirmApp
   }
 }
 
+export function* listAppointments(action: ReturnType<typeof actions.listAppointmentsAction>, ) {
+  try {
+    const loginUser = yield select(getLoginUser);
+    if (loginUser.appointments !== null) {
+      yield put(actions.listAppointmentsSuccessAction(loginUser.appointments));
+    }
+    else {
+      yield put(actions.listAppointmentsFailedAction("Appointment booking failed"));
+    }
+
+  } catch (error) {
+    yield put(actions.listAppointmentsFailedAction(error.message));
+  }
+}
 
 // Individual exports for testing
 export default function* doctorsSaga() {
   yield takeLatest(ActionTypes.CONFIRM_APPOINTMENT, confirmAppointment);
   yield takeLatest(ActionTypes.CREAT_APPOINTMENT, createAppointment);
+  yield takeLatest(ActionTypes.LIST_APPOINTMENTS, listAppointments);
 }
