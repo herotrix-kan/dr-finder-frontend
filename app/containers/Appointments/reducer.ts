@@ -56,6 +56,7 @@ function appointmentsReducer(
       };
 
     case ActionTypes.CONFIRM_APPOINTMENT:
+      console.info("CONFIRM_APPOINTMENT");
       return {
         // Delete prefixed '@' from the github username
         ...state,

@@ -10,7 +10,7 @@ import * as mutations from 'graphql/mutations';
 
 export const getDoctorSelected = (state: any) => state.doctors.doctorSelected;
 export const getLoginUser = (state: any) => state.user.loginUser;
-export const getNewAppointmentNotConfirmed = (state: any) => state.appointment.newAppointmentNotConfirmed;
+export const getNewAppointmentNotConfirmed = (state: any) => state.appointments.newAppointmentNotConfirmed;
 export function* createAppointment(action: ReturnType<typeof actions.createAppointmentAction>, ) {
   try {
     const { date, time } = action.payload;
@@ -27,7 +27,8 @@ export function* createAppointment(action: ReturnType<typeof actions.createAppoi
       doctorId: doctorSelected.id,
       patientId: loginUser.id,
       appointmentDateTime,
-      appointmentStatus: "upcoming",
+      appointmentDate: date,
+      appointmentTime: time,
       reason: "sick",
       timezone: doctorSelected.suburb,
       patientName: loginUser.patientName,
@@ -46,16 +47,30 @@ export function* confirmAppointment(action: ReturnType<typeof actions.confirmApp
   try {
 
     console.info("I am here:");
-    // const appointmentNotConfirmed = yield select(getNewAppointmentNotConfirmed);
-    // const apiReturn = yield API.graphql(graphqlOperation(mutations.createAppointment, appointmentNotConfirmed));
+    const appointmentNotConfirmed = yield select(getNewAppointmentNotConfirmed);
+    console.info("appointmentNotConfirmed:", appointmentNotConfirmed);
+    delete appointmentNotConfirmed.appointmentDate;
+    delete appointmentNotConfirmed.appointmentTime;
+    const apiReturn = yield API.graphql(graphqlOperation(mutations.createAppointment, appointmentNotConfirmed));
+    // const apiReturn = yield API.graphql(graphqlOperation(mutations.createAppointment, {
+    //   doctorId: "doctor_0",
+    //   patientId: "patient_DB42",
+    //   appointmentDateTime: "31313",
+    //   reason: "sick",
+    //   timezone: "melbourne",
+    //   patientName: "Zhi",
+    //   doctorName: "Kan",
+    //   location: "doncaster",
+    //   hospitalName: "Best one"
+    // }));
 
-    // console.info("appointmentNotConfirmed:", apiReturn);
-    // if (apiReturn.createAppointment) {
-    //   yield put(actions.confirmAppointmentSuccessAction(apiReturn.createAppointment));
-    // }
-    // else {
-    //   yield put(actions.confirmAppointmentFailedAction("Appointment booking failed"));
-    // }
+    console.info("appointmentNotConfirmed2:", apiReturn);
+    if (apiReturn.data.createAppointment) {
+      yield put(actions.confirmAppointmentSuccessAction(apiReturn.data.createAppointment));
+    }
+    else {
+      yield put(actions.confirmAppointmentFailedAction("Appointment booking failed"));
+    }
 
   } catch (error) {
     yield put(actions.confirmAppointmentFailedAction(error.message));

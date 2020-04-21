@@ -196,7 +196,7 @@ kill -9 PID
 ```
 
 
-1.confirmation registration issue, login issue
+1.confirmation registration issue, login issue, have to move (check is login function to header)
 2.hide header of login page
 3.whats loadable
 4. did not add booked hours to calendar

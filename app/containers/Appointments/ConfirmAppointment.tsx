@@ -43,17 +43,17 @@ function ConfirmAppointment(props: Props) {
 
     const { doctorSelected, newAppointmentNotConfirmed, newAppointmentConfirmSuccess, newAppointmentRequested, loginUser, loading, error } = useSelector(stateSelector);
     const dispatch = useDispatch();
-    if (loading) { return <LoadingIndicator />; }
-    if (error !== null) {
-        return <div>{error}</div>
-    }
-    else if (newAppointmentConfirmSuccess) {
+    // if (loading) { return <LoadingIndicator />; }
+    // if (error !== null) {
+    //     return <div>{error}</div>
+    // } why does it cause problem?
+    if (newAppointmentConfirmSuccess) {
         return <Redirect to={{
             pathname: '/appointments',
             state: { from: props.location }
         }} />
     }
-    else if (doctorSelected.id === null || newAppointmentNotConfirmed === null) {
+    if (newAppointmentNotConfirmed === null) {
         return <Redirect to={{
             pathname: '/doctors',
             state: { from: props.location }
@@ -75,7 +75,7 @@ function ConfirmAppointment(props: Props) {
             <div>
                 <h3>Are these details correct?</h3>
                 <div>
-                    {/* <h5>{newAppointmentNotConfirmed.appointmentDateTime}</h5> */}
+                    <h5>{newAppointmentNotConfirmed.appointmentDate}, {newAppointmentNotConfirmed.appointmentTime}</h5>
                     <p>{newAppointmentNotConfirmed.timezone} Line</p>
                 </div>
                 <div>

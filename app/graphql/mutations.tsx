@@ -47,7 +47,9 @@ const createAppointment = `
         $timezone: String!,
         $patientName: String!,
         $doctorName: String!, 
-        $location: String!) 
+        $location: String!
+        $hospitalName: String!
+        ) 
         {
 		createAppointment(
             doctorId: $doctorId
@@ -58,6 +60,7 @@ const createAppointment = `
             patientName: $patientName
             doctorName: $doctorName
             location: $location
+            hospitalName: $hospitalName
         ) {
             pId
             id

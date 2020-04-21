@@ -30,6 +30,8 @@ export interface AppointmentNotConfirmed {
   readonly doctorId: string;
   readonly patientId: string;
   readonly appointmentDateTime: string;
+  readonly appointmentDate: string;
+  readonly appointmentTime: string;
   readonly reason: string;
   readonly timezone: string;
   readonly patientName: string;
