@@ -3,6 +3,7 @@ import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 
 import ActionTypes from './constants';
 import * as actions from './actions';
+import * as userActions from './../User/actions';
 // import {  } from './types';
 import request from 'utils/request';
 import * as mutations from 'graphql/mutations';
@@ -66,11 +67,15 @@ export function* confirmAppointment(action: ReturnType<typeof actions.confirmApp
 export function* listAppointments(action: ReturnType<typeof actions.listAppointmentsAction>, ) {
   try {
     const loginUser = yield select(getLoginUser);
-    if (loginUser.appointments !== null) {
-      yield put(actions.listAppointmentsSuccessAction(loginUser.appointments));
+    const id = loginUser.id;
+    const apiReturn = yield API.graphql(graphqlOperation(queries.getPatient, { id }));
+    const patient = apiReturn.data.getPatient;
+    if (patient.appointments !== null) {
+      yield put(userActions.userLoginSuccessAction(patient));
+      yield put(actions.listAppointmentsSuccessAction(patient.appointments));
     }
     else {
-      yield put(actions.listAppointmentsFailedAction("Appointment booking failed"));
+      yield put(actions.listAppointmentsFailedAction("No Appointment"));
     }
 
   } catch (error) {

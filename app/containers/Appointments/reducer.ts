@@ -8,7 +8,7 @@ import ActionTypes from './constants';
 import { ContainerState, ContainerActions } from './types';
 
 export const initialState: ContainerState = {
-  appointmentList: [],
+  appointments: [],
   newAppointment: null,
   newAppointmentNotConfirmed: null,
   error: null,
@@ -66,8 +66,6 @@ function appointmentsReducer(
         // loading: action.payload.doctors,
       };
     case ActionTypes.CONFIRM_APPOINTMENT_SUCCESS:
-      const oldAppointments = [...state.appointmentList];
-      console.info("oldAppointments", oldAppointments);
       return {
         ...state,
         // Delete prefixed '@' from the github username
@@ -77,7 +75,6 @@ function appointmentsReducer(
         newAppointmentNotConfirmed: null,
         newAppointmentRequested: false,
         newAppointmentConfirmSuccess: true,
-        appointmentList: oldAppointments.unshift(action.payload),
       };
 
     case ActionTypes.CONFIRM_APPOINTMENT_FAILED:

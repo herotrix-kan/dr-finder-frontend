@@ -97,7 +97,7 @@ function ConfirmAppointment(props: Props) {
                     </div>
                 </div>
                 <div>
-                    <div className="button" onClick={() => dispatch(confirmAppointmentAction())}>Yes, Book Now</div>
+                    <div className="button" onClick={() => dispatch(confirmAppointmentAction())}> <button>Yes, Book Now</button></div>
                     <Link to="/make-appointment"> <button>No, Go Back </button></Link>
                 </div>
             </div>

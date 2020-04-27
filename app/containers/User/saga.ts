@@ -30,6 +30,7 @@ export function* userReturnLogin(action: ReturnType<typeof actions.userReturnLog
     const id = action.payload;
     const apiReturn = yield API.graphql(graphqlOperation(queries.getPatient, { id }));
     const patient = apiReturn.data.getPatient;
+    console.info('patient: ', patient)
     if (patient) {
       yield put(actions.userLoginSuccessAction(patient));
     }

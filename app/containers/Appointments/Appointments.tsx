@@ -53,9 +53,14 @@ function Appointments(props: Props) {
                 <meta name="description" content="Description of Doctor" />
             </Helmet>
             <div>
-                {appointments.map((appointment, index) => (
-                    <div key={`key-${index}`}>Hello, {appointment.doctorName}</div>
-                ))}
+                {appointments.map((appointment, index) =>
+                    appointment.appointmentStatus === "upcoming" &&
+                    (<div key={`key-${index}`}>
+                        <div>Hello, {appointment.doctorName}</div>
+                        <button>Cancel</button>
+                    </div>)
+
+                )}
             </div>
         </div>
     );
