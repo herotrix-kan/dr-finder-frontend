@@ -5,8 +5,6 @@ import { List } from 'lodash';
 
 /* --- STATE --- */
 interface UserState {
-  readonly isAuthenticating: boolean;
-  readonly isAuthenticated: boolean;
   readonly loginUser: LoginUser;
   readonly loginError: string | null,
   readonly registerError: string | null,

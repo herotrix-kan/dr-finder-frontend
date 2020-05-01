@@ -22,13 +22,10 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 
-const stateSelector = createStructuredSelector({
-  isAuthenticated: makeSelectIsAuthenticated(),
-  isAuthenticating: makeSelectIsAuthenticating(),
-});
 
 interface Props {
   location: string;
+  isAuthenticated: boolean;
 }
 
 const validationSchema = Yup.object().shape({
@@ -47,98 +44,76 @@ function Login(props: Props) {
   useInjectReducer({ key: 'user', reducer: reducer });
   useInjectSaga({ key: 'user', saga: saga });
 
-  const { isAuthenticated, isAuthenticating } = useSelector(stateSelector);
   const dispatch = useDispatch();
-  React.useEffect(() => {
-    onLoad();
-  }, []);
 
-  async function onLoad() {
-    try {
-      const response = await Auth.currentSession();
-      const id = response.idToken.payload.sub;
-      console.info("user id:", id);
-      dispatch(userReturnLoginAction(id));
-    }
-    catch (e) {
-      if (e !== 'No current user') {
-        alert(e);
-      }
-    }
-  }
-  if (!isAuthenticated)
-    return (
+  return (
+    <div>
+      <Helmet>
+        <title>User Login</title>
+        <meta name="description" content="Description of User" />
+      </Helmet>
+      <FormattedMessage {...messages.header} />
       <div>
-        <Helmet>
-          <title>User Login</title>
-          <meta name="description" content="Description of User" />
-        </Helmet>
-        <FormattedMessage {...messages.header} />
-        <div>
-          <h1>User Login</h1>
-          <Formik
-            initialValues={{
-              username: '',
-              password: '',
-            }}
-            validationSchema={validationSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              setSubmitting(true);
-              const { username, password } = values;
-              dispatch(userLoginAction(username, password));
-              setTimeout(() => {
-                setSubmitting(false);
-              }, 500);
-            }}>
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-            }) => (
-                <form
-                  onSubmit={handleSubmit}>
-                  <input
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    value={values.username}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                  <FormError
-                    touched={touched.username}
-                    message={errors.username} />
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={values.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                  <FormError
-                    touched={touched.password}
-                    message={errors.password} />
-                  <button type="submit" disabled={isSubmitting}>
-                    Login
+        <h1>User Login</h1>
+        <Formik
+          initialValues={{
+            username: '',
+            password: '',
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            setSubmitting(true);
+            const { username, password } = values;
+            dispatch(userLoginAction(username, password));
+            setTimeout(() => {
+              setSubmitting(false);
+            }, 500);
+          }}>
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+          }) => (
+              <form
+                onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Username"
+                  value={values.username}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <FormError
+                  touched={touched.username}
+                  message={errors.username} />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <FormError
+                  touched={touched.password}
+                  message={errors.password} />
+                <button type="submit" disabled={isSubmitting}>
+                  Login
 					</button>
-                </form>
-              )}
-          </Formik>
-          <Link to="/register">Register</Link>
+              </form>
+            )}
+        </Formik>
+        <Link to="/register">Register</Link>
 
-        </div>
-      </div >
-    );
+      </div>
+    </div >
+  );
 
-  else return (<Redirect to={{
-    pathname: '/doctors',
-    state: { from: props.location }
-  }} />);
 }
 
 export default memo(Login);

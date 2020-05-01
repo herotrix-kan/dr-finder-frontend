@@ -6,16 +6,17 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styles/styled-components';
 import { Switch, Route } from 'react-router-dom';
 import config from 'utils/config';
-import Amplify from 'aws-amplify';
-// import HomePage from 'containers/HomePage/Loadable';
+import Amplify, { Auth } from 'aws-amplify';
 
 import { Doctors, Doctor } from 'containers/Doctors';
 import { Login, Register, Confirmation } from 'containers/User';
+import { userReturnLoginAction } from 'containers/User/actions';
+import { useDispatch } from 'react-redux';
 import { MakeAppointment, ConfirmAppointment, Appointments } from 'containers/Appointments';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
@@ -51,6 +52,28 @@ Amplify.configure({
 });
 
 export default function App() {
+  const [isAuthenticated, userHasAuthenticated] = useState(false);
+  const [isAuthenticating, setIsAuthenticating] = useState(true);
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    onLoad();
+  }, []);
+
+  async function onLoad() {
+    try {
+      const response = await Auth.currentSession();
+      const id = response.idToken.payload.sub;
+      dispatch(userReturnLoginAction(id));
+      userHasAuthenticated(true);
+    }
+    catch (e) {
+      if (e !== 'No current user') {
+        alert(e);
+      }
+    }
+    setIsAuthenticating(false);
+  }
+
 
   return (
     <AppWrapper>

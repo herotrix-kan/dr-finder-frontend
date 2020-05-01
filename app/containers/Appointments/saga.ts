@@ -66,8 +66,10 @@ export function* confirmAppointment(action: ReturnType<typeof actions.confirmApp
 
 export function* listAppointments(action: ReturnType<typeof actions.listAppointmentsAction>, ) {
   try {
+
     const loginUser = yield select(getLoginUser);
     const id = loginUser.id;
+    console.info("listAppointments:", id);
     const apiReturn = yield API.graphql(graphqlOperation(queries.getPatient, { id }));
     const patient = apiReturn.data.getPatient;
     if (patient.appointments !== null) {

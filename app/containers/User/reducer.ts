@@ -8,8 +8,6 @@ import ActionTypes from './constants';
 import { ContainerState, ContainerActions } from './types';
 
 export const initialState: ContainerState = {
-  isAuthenticating: true,
-  isAuthenticated: false,
   isCodeSent: false,
   loginError: null,
   registerError: null,
@@ -37,8 +35,6 @@ function userReducer(
     case ActionTypes.USER_LOGIN_SUCCESS:
       return {
         ...state,
-        isAuthenticating: false,
-        isAuthenticated: true,
         loginUser: action.payload,
       };
     case ActionTypes.USER_REGISTER:

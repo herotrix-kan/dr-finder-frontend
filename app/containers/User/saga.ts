@@ -26,7 +26,9 @@ export function* userLogin(action: ReturnType<typeof actions.userLoginAction>, )
   }
 }
 export function* userReturnLogin(action: ReturnType<typeof actions.userReturnLoginAction>, ) {
+  console.info("3");
   try {
+
     const id = action.payload;
     const apiReturn = yield API.graphql(graphqlOperation(queries.getPatient, { id }));
     const patient = apiReturn.data.getPatient;

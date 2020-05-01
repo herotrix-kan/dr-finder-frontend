@@ -46,6 +46,7 @@ function Appointments(props: Props) {
     if (error !== null) {
         return <div>{error}</div>
     }
+    console.info("application");
     return (
         <div>
             <Helmet>
