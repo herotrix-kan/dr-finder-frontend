@@ -30,10 +30,12 @@ import { UnauthenticatedRoute, AuthenticatedRoute } from 'components/Route';
 import GlobalStyle from '../../global-styles';
 
 const AppWrapper = styled.div`
-  max-width: calc(768px + 16px * 2);
-  margin: 0 auto;
-  display: flex;
   min-height: 100%;
+`;
+const Container = styled.div`
+  max-width: calc(768px + 16px * 2);
+  margin: 20px auto;
+  display: flex;
   padding: 0 16px;
   flex-direction: column;
 `;
@@ -97,18 +99,20 @@ export default function App(props) {
             pathname: '/login',
             state: { from: props.location }
           }} />)}
-        <Switch>
-          <AuthenticatedRoute exact path="/" component={Doctors} appProps={{ isAuthenticated, userHasAuthenticated }} />
-          <UnauthenticatedRoute exact path="/login" component={Login} appProps={{ isAuthenticated, userHasAuthenticated }} />
-          <UnauthenticatedRoute exact path="/register" component={Register} appProps={{ isAuthenticated, userHasAuthenticated }} />
-          <AuthenticatedRoute exact path="/confirmation" component={Confirmation} appProps={{ isAuthenticated, userHasAuthenticated }} />
-          <AuthenticatedRoute exact path="/features" component={FeaturePage} appProps={{ isAuthenticated, userHasAuthenticated }} />
-          <AuthenticatedRoute exact path="/appointments" component={Appointments} appProps={{ isAuthenticated, userHasAuthenticated }} />
-          <AuthenticatedRoute exact path="/doctor/:id" component={Doctor} appProps={{ isAuthenticated, userHasAuthenticated }} />
-          <AuthenticatedRoute exact path="/make-appointment" component={MakeAppointment} appProps={{ isAuthenticated, userHasAuthenticated }} />
-          <AuthenticatedRoute exact path="/confirm-appointment" component={ConfirmAppointment} appProps={{ isAuthenticated, userHasAuthenticated }} />
-          <Route path="" component={NotFoundPage} />
-        </Switch>
+        <Container>
+          <Switch>
+            <AuthenticatedRoute exact path="/" component={Doctors} appProps={{ isAuthenticated, userHasAuthenticated }} />
+            <UnauthenticatedRoute exact path="/login" component={Login} appProps={{ isAuthenticated, userHasAuthenticated }} />
+            <UnauthenticatedRoute exact path="/register" component={Register} appProps={{ isAuthenticated, userHasAuthenticated }} />
+            <AuthenticatedRoute exact path="/confirmation" component={Confirmation} appProps={{ isAuthenticated, userHasAuthenticated }} />
+            <AuthenticatedRoute exact path="/features" component={FeaturePage} appProps={{ isAuthenticated, userHasAuthenticated }} />
+            <AuthenticatedRoute exact path="/appointments" component={Appointments} appProps={{ isAuthenticated, userHasAuthenticated }} />
+            <AuthenticatedRoute exact path="/doctor/:id" component={Doctor} appProps={{ isAuthenticated, userHasAuthenticated }} />
+            <AuthenticatedRoute exact path="/make-appointment" component={MakeAppointment} appProps={{ isAuthenticated, userHasAuthenticated }} />
+            <AuthenticatedRoute exact path="/confirm-appointment" component={ConfirmAppointment} appProps={{ isAuthenticated, userHasAuthenticated }} />
+            <Route path="" component={NotFoundPage} />
+          </Switch>
+        </Container>
         <Footer />
         <GlobalStyle />
       </AppWrapper>

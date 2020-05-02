@@ -86,16 +86,12 @@ export function* listAppointments(action: ReturnType<typeof actions.listAppointm
 
 export function* cancelAppointment(action: ReturnType<typeof actions.cancelAppointmentAction>, ) {
   try {
-
     const id = action.payload;
     const appointments = yield select(getAppointments);
-    console.info(appointments);
     const apiReturn = yield API.graphql(graphqlOperation(mutations.updateAppointment, { id, appointmentStatus: "canceled" }));
-    console.info("apiReturn", apiReturn.data.updateAppointment)
     const isUpdated = apiReturn.data.updateAppointment;
     if (isUpdated) {
       const newAppointments = appointments.map(appointment => appointment.id == id ? { ...appointment, appointmentStatus: "canceled" } : appointment);
-      console.info("newAppointments:", newAppointments);
       yield put(actions.cancelAppointmentSuccessAction(newAppointments));
     }
     else {
