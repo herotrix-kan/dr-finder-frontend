@@ -1,6 +1,6 @@
 /*
  *
- * Doctor
+ * Doctors
  *
  */
 
@@ -53,7 +53,7 @@ function Doctors(props: Props) {
         <meta name="description" content="Description of Doctor" />
       </Helmet>
       <SearchDoctor />
-      <h3>Provider Name</h3>
+      <h5>Provider Name</h5>
       <DoctorList {...doctorsProps} />
     </div>
   );

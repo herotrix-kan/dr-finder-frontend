@@ -21,7 +21,6 @@ import reducer from 'containers/User/reducer';
 import saga from 'containers/User/saga';
 import { useDispatch } from 'react-redux';
 import { MakeAppointment, ConfirmAppointment, Appointments } from 'containers/Appointments';
-import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -105,7 +104,6 @@ export default function App(props) {
             <UnauthenticatedRoute exact path="/login" component={Login} appProps={{ isAuthenticated, userHasAuthenticated }} />
             <UnauthenticatedRoute exact path="/register" component={Register} appProps={{ isAuthenticated, userHasAuthenticated }} />
             <AuthenticatedRoute exact path="/confirmation" component={Confirmation} appProps={{ isAuthenticated, userHasAuthenticated }} />
-            <AuthenticatedRoute exact path="/features" component={FeaturePage} appProps={{ isAuthenticated, userHasAuthenticated }} />
             <AuthenticatedRoute exact path="/appointments" component={Appointments} appProps={{ isAuthenticated, userHasAuthenticated }} />
             <AuthenticatedRoute exact path="/doctor/:id" component={Doctor} appProps={{ isAuthenticated, userHasAuthenticated }} />
             <AuthenticatedRoute exact path="/make-appointment" component={MakeAppointment} appProps={{ isAuthenticated, userHasAuthenticated }} />

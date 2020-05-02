@@ -1,24 +1,11 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
-import { Auth } from "aws-amplify";
-import { useInjectSaga } from 'utils/injectSaga';
-import { useInjectReducer } from 'utils/injectReducer';
-import { Switch, Route, Redirect, Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { userReturnLoginAction } from 'containers/User/actions';
 import { makeSelectIsAuthenticated } from "containers/User/selectors";
-import reducer from 'containers/User/reducer';
-import saga from 'containers/User/saga';
 
-
-import A from './A';
 import NavBar from './NavBar';
 import HeaderLink from './HeaderLink';
 import styled from 'styles/styled-components';
 import Img from './Img';
-import Banner from './banner.jpg';
-import messages from './messages';
 
 const HeaderWrap = styled.div`
   display: flex;
