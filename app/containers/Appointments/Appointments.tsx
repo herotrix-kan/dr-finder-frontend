@@ -17,7 +17,7 @@ import { useInjectReducer } from "utils/injectReducer";
 import { makeSelectAppointments, makeSelectLoading, makeSelectError } from "./selectors";
 import LoadingIndicator from 'components/LoadingIndicator';
 
-import { listAppointmentsAction } from './actions';
+import { listAppointmentsAction, cancelAppointmentAction } from './actions';
 import reducer from "./reducer";
 import saga from "./saga";
 import messages from "./messages";
@@ -54,10 +54,11 @@ function Appointments(props: Props) {
             </Helmet>
             <div>
                 {appointments.map((appointment, index) =>
-                    appointment.appointmentStatus === "upcoming" &&
+
                     (<div key={`key-${index}`}>
                         <div>Hello, {appointment.doctorName}</div>
-                        <button>Cancel</button>
+                        <div>Status: {appointment.appointmentStatus}</div>
+                        {appointment.appointmentStatus === "upcoming" && <button onClick={() => dispatch(cancelAppointmentAction(appointment.id))}>Cancel</button>}
                     </div>)
 
                 )}

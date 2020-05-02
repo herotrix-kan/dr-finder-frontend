@@ -108,6 +108,30 @@ function appointmentsReducer(
         loading: false,
         error: action.payload,
       };
+
+    case ActionTypes.CANCEL_APPOINTMENT:
+      return {
+        // Delete prefixed '@' from the github username
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case ActionTypes.CANCEL_APPOINTMENT_SUCCESS:
+      return {
+        ...state,
+        // Delete prefixed '@' from the github username
+        loading: false,
+        error: null,
+        appointments: action.payload,
+      };
+
+    case ActionTypes.CANCEL_APPOINTMENT_FAILED:
+      return {
+        // Delete prefixed '@' from the github username
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

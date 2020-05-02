@@ -12,6 +12,9 @@ const getPatient = `query ($id: String!) {
             phone
             email
             appointments{
+                id
+                doctorId
+                patientId
                 appointmentDateTime
                 appointmentStatus
                 reason
@@ -42,6 +45,9 @@ const getDoctor = `query ($id: String!) {
             availableHours
             bookedHours
             appointments{
+              id
+              doctorId
+              patientId
               appointmentDateTime
               appointmentStatus
               reason

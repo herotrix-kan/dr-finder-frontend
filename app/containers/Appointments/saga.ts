@@ -12,6 +12,7 @@ import * as queries from 'graphql/queries';
 
 export const getDoctorSelected = (state: any) => state.doctors.doctorSelected;
 export const getLoginUser = (state: any) => state.user.loginUser;
+export const getAppointments = (state: any) => state.appointments.appointments;
 export const getNewAppointmentNotConfirmed = (state: any) => state.appointments.newAppointmentNotConfirmed;
 export function* createAppointment(action: ReturnType<typeof actions.createAppointmentAction>, ) {
   try {
@@ -19,6 +20,7 @@ export function* createAppointment(action: ReturnType<typeof actions.createAppoi
 
     const doctorSelected = yield select(getDoctorSelected);
     const loginUser = yield select(getLoginUser);
+
     const appointmentDateTime = JSON.stringify({ [date]: time }).replace(/"/g, "\\\"");
     const fullAddress = `${doctorSelected.address} ${doctorSelected.suburb},
     
@@ -82,9 +84,33 @@ export function* listAppointments(action: ReturnType<typeof actions.listAppointm
   }
 }
 
+export function* cancelAppointment(action: ReturnType<typeof actions.cancelAppointmentAction>, ) {
+  try {
+
+    const id = action.payload;
+    const appointments = yield select(getAppointments);
+    console.info(appointments);
+    const apiReturn = yield API.graphql(graphqlOperation(mutations.updateAppointment, { id, appointmentStatus: "canceled" }));
+    console.info("apiReturn", apiReturn.data.updateAppointment)
+    const isUpdated = apiReturn.data.updateAppointment;
+    if (isUpdated) {
+      const newAppointments = appointments.map(appointment => appointment.id == id ? { ...appointment, appointmentStatus: "canceled" } : appointment);
+      console.info("newAppointments:", newAppointments);
+      yield put(actions.cancelAppointmentSuccessAction(newAppointments));
+    }
+    else {
+      yield put(actions.cancelAppointmentFailedAction("Update failed"));
+    }
+
+  } catch (error) {
+    yield put(actions.listAppointmentsFailedAction(error.message));
+  }
+}
+
 // Individual exports for testing
 export default function* doctorsSaga() {
   yield takeLatest(ActionTypes.CONFIRM_APPOINTMENT, confirmAppointment);
   yield takeLatest(ActionTypes.CREAT_APPOINTMENT, createAppointment);
   yield takeLatest(ActionTypes.LIST_APPOINTMENTS, listAppointments);
+  yield takeLatest(ActionTypes.CANCEL_APPOINTMENT, cancelAppointment);
 }

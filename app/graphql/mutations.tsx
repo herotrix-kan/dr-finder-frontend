@@ -80,29 +80,11 @@ const createAppointment = `
 const updateAppointment = `
     mutation(
         $id: String!,
-        $email: String,
-        $patientName: String,
-        $introduction: String,
-        $address: String,
-        $suburb: String,
-        $addressState: String,
-        $postcode: Int,
-        $speakingLanguage: String,
-        $phone: String,
-        $email: String,
+        $appointmentStatus: String!,
     ){
-        updatePatient(
-            id: $sId,
-            email: $email,
-            patientName: $patientName,
-            introduction: $introduction,
-            address: $address,
-            suburb: $suburb,
-            addressState: $addressState,
-            postcode: $postcode,
-            speakingLanguage: $speakingLanguage,
-            phone: $phone,
-            email: $email,
+        updateAppointment(
+            id: $id,
+            appointmentStatus: $appointmentStatus,
         )
     }`;
 export { createPatient, updatePatient, createAppointment, updateAppointment };
