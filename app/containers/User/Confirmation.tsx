@@ -64,10 +64,8 @@ function Register(props: Props) {
           }}
           // validationSchema={validationConfirmationSchema}
           onSubmit={(values, { setSubmitting }) => {
-            console.info("confirmationCode:");
             setSubmitting(true);
             const { code } = values;
-            console.info("confirmationCode:", code);
             dispatch(userConfirmRegisterAction(usernameState, code));
             setTimeout(() => {
               setSubmitting(false);

@@ -52,7 +52,6 @@ function Login(props: Props) {
         <title>User Login</title>
         <meta name="description" content="Description of User" />
       </Helmet>
-      <FormattedMessage {...messages.header} />
       <div>
         <h1>User Login</h1>
         <Formik

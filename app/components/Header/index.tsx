@@ -24,13 +24,7 @@ const stateSelector = createStructuredSelector({
   isAuthenticated: makeSelectIsAuthenticated(),
 });
 
-interface Props {
-  location: string;
-  isAuthenticated: boolean;
-  handleLogout; void;
-}
 function Header({ appProps }) {
-  console.info("isAuthenticated", appProps.isAuthenticated);
   return (
     <div>
       <NavBar>
@@ -43,9 +37,9 @@ function Header({ appProps }) {
         <HeaderLink to="/appointments">
           Appointments
         </HeaderLink>
-        {appProps.isAuthenticated && (
-          <button onClick={appProps.handleLogout}>Logout</button>
-        )}
+
+        <button onClick={appProps.handleLogout}>Logout</button>
+
       </NavBar>
     </div>
   );

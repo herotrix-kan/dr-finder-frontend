@@ -43,21 +43,10 @@ function ConfirmAppointment(props: Props) {
 
     const { doctorSelected, newAppointmentNotConfirmed, newAppointmentConfirmSuccess, newAppointmentRequested, loginUser, loading, error } = useSelector(stateSelector);
     const dispatch = useDispatch();
-    // if (loading) { return <LoadingIndicator />; }
-    // if (error !== null) {
-    //     return <div>{error}</div>
-    // } why does it cause problem?
 
-    // useEffect(() => {
-    //     if (newAppointmentConfirmSuccess) {
-    //         props.history.push('/appointments', { from: props.location });
-    //     }
-    // }, [newAppointmentConfirmSuccess]);
     useEffect(() => {
         dispatch(setNewAppointmentRequestedAction(false));
     }, []);
-    // console.info("newAppointmentConfirmSuccess:", newAppointmentConfirmSuccess);
-    // console.info("newAppointmentNotConfirmed:", newAppointmentNotConfirmed);
     if (newAppointmentConfirmSuccess) {
         return (<Redirect to={{
             pathname: '/appointments',

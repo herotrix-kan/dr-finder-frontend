@@ -20,7 +20,6 @@ export function* createAppointment(action: ReturnType<typeof actions.createAppoi
     const doctorSelected = yield select(getDoctorSelected);
     const loginUser = yield select(getLoginUser);
     const appointmentDateTime = JSON.stringify({ [date]: time }).replace(/"/g, "\\\"");
-    console.info("appointmentDateTime", appointmentDateTime)
     const fullAddress = `${doctorSelected.address} ${doctorSelected.suburb},
     
     ${doctorSelected.addressState} ${doctorSelected.postcode}`;
@@ -51,7 +50,6 @@ export function* confirmAppointment(action: ReturnType<typeof actions.confirmApp
     delete appointmentNotConfirmed.appointmentDate;
     delete appointmentNotConfirmed.appointmentTime;
     const apiReturn = yield API.graphql(graphqlOperation(mutations.createAppointment, appointmentNotConfirmed));
-    console.info("appointmentNotConfirmed2:", apiReturn);
     if (apiReturn.data.createAppointment) {
       yield put(actions.confirmAppointmentSuccessAction(apiReturn.data.createAppointment));
     }
@@ -69,7 +67,6 @@ export function* listAppointments(action: ReturnType<typeof actions.listAppointm
 
     const loginUser = yield select(getLoginUser);
     const id = loginUser.id;
-    console.info("listAppointments:", id);
     const apiReturn = yield API.graphql(graphqlOperation(queries.getPatient, { id }));
     const patient = apiReturn.data.getPatient;
     if (patient.appointments !== null) {

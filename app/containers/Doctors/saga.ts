@@ -12,7 +12,6 @@ export function* listDoctors(action: ReturnType<typeof actions.listDoctorsAction
   try {
 
     const apiReturn = yield API.graphql(graphqlOperation(queries.listDoctors));
-    // console.info("apiReturn:", apiReturn);
     const doctors = apiReturn.data.listDoctors;
 
     if (doctors)

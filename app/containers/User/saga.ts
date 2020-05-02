@@ -25,13 +25,10 @@ export function* userLogin(action: ReturnType<typeof actions.userLoginAction>, )
   }
 }
 export function* userReturnLogin(action: ReturnType<typeof actions.userReturnLoginAction>, ) {
-  console.info("3");
   try {
-
     const id = action.payload;
-    const apiReturn = yield API.graphql(graphqlOperation(queries.getPatient, { id }));
+    const apiReturn = yield API.graphql(graphqlOperation(queries.getPatient, { id: "e867a3da-e89a-4154-8cbb-64df68dd799c" }));
     const patient = apiReturn.data.getPatient;
-    console.info('patient: ', patient)
     if (patient) {
       yield put(actions.userLoginSuccessAction(patient));
     }
@@ -58,12 +55,10 @@ export function* userRegister(action: ReturnType<typeof actions.userRegisterActi
 //will update confirmation, can create a patient in graphql
 export function* userConfirmRegister(action: ReturnType<typeof actions.userConfirmRegisterAction>, ) {
   try {
-
     const { username, confirmationCode } = action.payload;
     const response = yield Auth.confirmSignUp(username, confirmationCode);
     const id = response.idToken.payload.sub;
     const apiReturn = yield API.graphql(graphqlOperation(mutations.createPatient, { id, username }));
-    // console.info("userConfirmRegister", apiReturn);
   } catch (error) {
     alert(error.message);
     yield put(actions.userConfirmRegisterFailedAction(error.message));

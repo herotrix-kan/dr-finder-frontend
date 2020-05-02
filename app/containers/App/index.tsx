@@ -6,23 +6,26 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
-import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+import React, { useState } from 'react';
 import styled from 'styles/styled-components';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import config from 'utils/config';
 import Amplify, { Auth } from 'aws-amplify';
 import { push } from 'connected-react-router';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
 import { Doctors, Doctor } from 'containers/Doctors';
 import { Login, Register, Confirmation } from 'containers/User';
 import { userReturnLoginAction } from 'containers/User/actions';
+import reducer from 'containers/User/reducer';
+import saga from 'containers/User/saga';
 import { useDispatch } from 'react-redux';
 import { MakeAppointment, ConfirmAppointment, Appointments } from 'containers/Appointments';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-import { AppliedRoute, UnauthenticatedRoute, AuthenticatedRoute } from 'components/Route';
+import { UnauthenticatedRoute, AuthenticatedRoute } from 'components/Route';
 
 import GlobalStyle from '../../global-styles';
 
@@ -56,6 +59,8 @@ export default function App(props) {
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const dispatch = useDispatch();
+  useInjectReducer({ key: 'user', reducer: reducer });
+  useInjectSaga({ key: 'user', saga: saga });
   React.useEffect(() => {
     onLoad();
   }, []);
@@ -66,10 +71,8 @@ export default function App(props) {
       const id = response.idToken.payload.sub;
       dispatch(userReturnLoginAction(id));
       userHasAuthenticated(true);
-      console.info(id);
     }
     catch (e) {
-      console.info("22");
       userHasAuthenticated(false);
       if (e !== 'No current user') {
         alert(e);
@@ -77,36 +80,39 @@ export default function App(props) {
     }
     setIsAuthenticating(false);
   }
+
   async function handleLogout() {
     await Auth.signOut();
     userHasAuthenticated(false);
-    push("/");
+    push("/login");
   }
-  //have to pass isAuthenticated prop to next level
+
   return (
-    <AppWrapper>
-      {/* <Helmet
-        titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="React.js Boilerplate"
-      >
-        <meta name="description" content="A React.js Boilerplate application" />
-      </Helmet> */}
-      <Header appProps={{ isAuthenticated, handleLogout }} />
-      <Switch>
-        <AuthenticatedRoute exact path="/" component={Doctors} appProps={{ isAuthenticated, userHasAuthenticated }} />
-        <UnauthenticatedRoute exact path="/login" component={Login} appProps={{ isAuthenticated, userHasAuthenticated }} />
-        <UnauthenticatedRoute exact path="/register" component={Register} appProps={{ isAuthenticated, userHasAuthenticated }} />
-        <AuthenticatedRoute exact path="/confirmation" component={Confirmation} appProps={{ isAuthenticated, userHasAuthenticated }} />
-        <AuthenticatedRoute exact path="/features" component={FeaturePage} appProps={{ isAuthenticated, userHasAuthenticated }} />
-        <AuthenticatedRoute exact path="/appointments" component={Appointments} appProps={{ isAuthenticated, userHasAuthenticated }} />
-        <AuthenticatedRoute exact path="/doctor/:id" component={Doctor} appProps={{ isAuthenticated, userHasAuthenticated }} />
-        <AuthenticatedRoute exact path="/make-appointment" component={MakeAppointment} appProps={{ isAuthenticated, userHasAuthenticated }} />
-        <AuthenticatedRoute exact path="/confirm-appointment" component={ConfirmAppointment} appProps={{ isAuthenticated, userHasAuthenticated }} />
-        <Route path="" component={NotFoundPage} />
-      </Switch>
-      <Footer />
-      <GlobalStyle />
-    </AppWrapper>
+    !isAuthenticating && (
+      <AppWrapper>
+        {isAuthenticated ? (
+          <Header appProps={{ handleLogout }} />
+        ) :
+          (<Redirect to={{
+            pathname: '/login',
+            state: { from: props.location }
+          }} />)}
+        <Switch>
+          <AuthenticatedRoute exact path="/" component={Doctors} appProps={{ isAuthenticated, userHasAuthenticated }} />
+          <UnauthenticatedRoute exact path="/login" component={Login} appProps={{ isAuthenticated, userHasAuthenticated }} />
+          <UnauthenticatedRoute exact path="/register" component={Register} appProps={{ isAuthenticated, userHasAuthenticated }} />
+          <AuthenticatedRoute exact path="/confirmation" component={Confirmation} appProps={{ isAuthenticated, userHasAuthenticated }} />
+          <AuthenticatedRoute exact path="/features" component={FeaturePage} appProps={{ isAuthenticated, userHasAuthenticated }} />
+          <AuthenticatedRoute exact path="/appointments" component={Appointments} appProps={{ isAuthenticated, userHasAuthenticated }} />
+          <AuthenticatedRoute exact path="/doctor/:id" component={Doctor} appProps={{ isAuthenticated, userHasAuthenticated }} />
+          <AuthenticatedRoute exact path="/make-appointment" component={MakeAppointment} appProps={{ isAuthenticated, userHasAuthenticated }} />
+          <AuthenticatedRoute exact path="/confirm-appointment" component={ConfirmAppointment} appProps={{ isAuthenticated, userHasAuthenticated }} />
+          <Route path="" component={NotFoundPage} />
+        </Switch>
+        <Footer />
+        <GlobalStyle />
+      </AppWrapper>
+    )
   );
 
 }

@@ -57,7 +57,6 @@ function appointmentsReducer(
       };
 
     case ActionTypes.CONFIRM_APPOINTMENT:
-      console.info("CONFIRM_APPOINTMENT");
       return {
         // Delete prefixed '@' from the github username
         ...state,
@@ -86,7 +85,6 @@ function appointmentsReducer(
       };
 
     case ActionTypes.LIST_APPOINTMENTS:
-      console.info("CONFIRM_APPOINTMENT");
       return {
         // Delete prefixed '@' from the github username
         ...state,
@@ -95,7 +93,6 @@ function appointmentsReducer(
         // loading: action.payload.doctors,
       };
     case ActionTypes.LIST_APPOINTMENTS_SUCCESS:
-      console.info("CONFIRM_APPOINTMENT_SUCCESS");
       return {
         ...state,
         // Delete prefixed '@' from the github username
