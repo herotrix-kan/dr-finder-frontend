@@ -11,7 +11,6 @@ export function* userLogin(action: ReturnType<typeof actions.userLoginAction>, )
   try {
     const { username, password } = action.payload;
     const loginResponse = yield Auth.signIn(username, password);
-
     if (!loginResponse.CognitoUser) return;
 
     //will change to grahql call
@@ -59,6 +58,7 @@ export function* userRegister(action: ReturnType<typeof actions.userRegisterActi
 //will update confirmation, can create a patient in graphql
 export function* userConfirmRegister(action: ReturnType<typeof actions.userConfirmRegisterAction>, ) {
   try {
+
     const { username, confirmationCode } = action.payload;
     const response = yield Auth.confirmSignUp(username, confirmationCode);
     const id = response.idToken.payload.sub;

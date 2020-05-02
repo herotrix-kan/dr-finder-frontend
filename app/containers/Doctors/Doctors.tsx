@@ -46,7 +46,6 @@ function Doctors(props: Props) {
     error,
   };
 
-  // console.info(doctors);
   return (
     <div>
       <Helmet>

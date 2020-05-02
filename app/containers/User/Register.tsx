@@ -134,7 +134,7 @@ function Register(props: Props) {
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
           const { confirmationCode } = values;
-          dispatch(userConfirmRegisterAction("70129300@qq.com", confirmationCode));
+          dispatch(userConfirmRegisterAction("kanwang1988@gmail.com", confirmationCode));
           // dispatch(userConfirmRegisterAction(usernameState, confirmationCode));
           setTimeout(() => {
             setSubmitting(false);

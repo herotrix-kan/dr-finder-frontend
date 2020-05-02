@@ -60,15 +60,15 @@ function Register(props: Props) {
         <h1>User Confirmation</h1>
         <Formik
           initialValues={{
-            password: '',
+            code: '',
           }}
           // validationSchema={validationConfirmationSchema}
           onSubmit={(values, { setSubmitting }) => {
             console.info("confirmationCode:");
             setSubmitting(true);
-            const { password } = values;
-            console.info("confirmationCode:", password);
-            dispatch(userConfirmRegisterAction(usernameState, password));
+            const { code } = values;
+            console.info("confirmationCode:", code);
+            dispatch(userConfirmRegisterAction(usernameState, code));
             setTimeout(() => {
               setSubmitting(false);
             }, 500);
