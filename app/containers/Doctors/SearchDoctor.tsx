@@ -16,9 +16,36 @@ import { searchDoctorsAction } from './actions';
 import reducer from '../User/reducer';
 import saga from '../User/saga';
 
-const SearchWrap = styled(Formik)`
+const SearchWrap = styled.form`
   display: flex;
   background-color:#fff;
+  margin-bottom:30px;
+  padding:5px;
+  justify-content: space-between;
+  input{
+    line-height: 2.3;
+    border: 0;
+    margin-right: 10px;
+    min-width: 220px;
+    &:first-child{
+        border-right: 1px solid #e5e5e5;
+    }
+    &:focus{
+        outline:none;
+    }
+  }
+  button{
+    background-color: #089408;
+    color: #fff;
+    width: 50px;
+    height: 35px;
+    border-radius: 3px;
+  }
+  .from-message{
+    top: 6px;
+    left: -20px;
+    position: relative;
+  }
 `;
 
 const validationSchema = Yup.object().shape({
@@ -35,7 +62,8 @@ function SearchDoctor(props: Props) {
 
     const dispatch = useDispatch();
     return (
-        <SearchWrap
+
+        <Formik
             initialValues={{
                 doctorName: '',
                 postcode: '',
@@ -58,7 +86,7 @@ function SearchDoctor(props: Props) {
                 handleSubmit,
                 isSubmitting,
             }) => (
-                    <form
+                    <SearchWrap
                         onSubmit={handleSubmit}>
                         <input
                             type="text"
@@ -82,12 +110,11 @@ function SearchDoctor(props: Props) {
                         <FormError
                             touched={touched.postcode}
                             message={errors.postcode} />
-                        <button type="submit" disabled={isSubmitting}>
-                            Search
-					                </button>
-                    </form>
+                        <button type="submit" disabled={isSubmitting}>-></button>
+                    </SearchWrap>
                 )}
-        </SearchWrap>
+        </Formik>
+
     );
 }
 

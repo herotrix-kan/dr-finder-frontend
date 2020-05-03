@@ -1,17 +1,16 @@
 import * as React from 'react';
 
 import Item from './Item';
-import Wrapper from './Wrapper';
 
 function ListItem({ doctorItem }) {
   return (
-    <Wrapper>
-      <Item>
-        <img src='https://picsum.photos/200' />
+    <Item to={`/doctor/${doctorItem.id}`} key={`item - ${doctorItem.id}`}>
+      <img src='https://picsum.photos/50' />
+      <div>
         <h5>{doctorItem.doctorName}</h5>
         <p>{doctorItem.hospitalName}</p>
-      </Item>
-    </Wrapper>
+      </div>
+    </Item>
   );
 }
 
